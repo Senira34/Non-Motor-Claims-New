@@ -64,16 +64,19 @@ function renderSidebar(activePage) {
 
   const sidebarHTML = `
     <aside id="main-sidebar" class="w-60 min-h-screen bg-white border-r border-gray-200 flex flex-col pt-2 fixed left-0 top-16 bottom-0 z-40 overflow-y-auto transition-transform duration-300 ease-in-out">
-      <div class="px-3 pb-2 flex justify-end">
-        <button onclick="toggleSidebar()" class="p-1.5 rounded-lg text-gray-500 hover:bg-teal-50 hover:text-teal-700 transition-colors" title="Toggle Sidebar">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
-          </svg>
-        </button>
-      </div>
       <nav class="flex-1 px-2 py-1 space-y-1">
         ${linksHTML}
       </nav>
+      <div class="border-t border-gray-200 px-3 py-3">
+        <button onclick="toggleSidebar()" id="sidebar-toggle-btn"
+          class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-gray-500 hover:bg-teal-50 hover:text-teal-700 transition-colors group"
+          title="Collapse Sidebar">
+          <span class="sidebar-label">Collapse</span>
+          <svg id="sidebar-arrow-icon" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+          </svg>
+        </button>
+      </div>
     </aside>`;
 
   const container = document.getElementById('sidebar-container');
@@ -101,6 +104,9 @@ window.toggleSidebar = function () {
 function applySidebarState(hide) {
   const sidebar = document.getElementById('main-sidebar');
   const mains = document.querySelectorAll('main');
+  const arrowIcon = document.getElementById('sidebar-arrow-icon');
+  const sidebarLabel = document.querySelector('.sidebar-label');
+  const toggleBtn = document.getElementById('sidebar-toggle-btn');
 
   if (!sidebar) return;
 
@@ -111,6 +117,9 @@ function applySidebarState(hide) {
       m.classList.add('ml-0');
       m.classList.add('transition-all', 'duration-300', 'ease-in-out');
     });
+    if (arrowIcon) arrowIcon.style.transform = 'rotate(180deg)';
+    if (sidebarLabel) sidebarLabel.textContent = 'Expand';
+    if (toggleBtn) toggleBtn.title = 'Expand Sidebar';
   } else {
     sidebar.classList.remove('-translate-x-full');
     mains.forEach(m => {
@@ -118,5 +127,8 @@ function applySidebarState(hide) {
       m.classList.add('ml-56');
       m.classList.add('transition-all', 'duration-300', 'ease-in-out');
     });
+    if (arrowIcon) arrowIcon.style.transform = 'rotate(0deg)';
+    if (sidebarLabel) sidebarLabel.textContent = 'Collapse';
+    if (toggleBtn) toggleBtn.title = 'Collapse Sidebar';
   }
 }
