@@ -56,7 +56,7 @@
   <div id="sidebar-container"></div>
   <script src="sidebar-component.js"></script>
 
-  <main class="ml-56 pt-16 min-h-screen">
+  <main class="ml-64 pt-16 min-h-screen">
     <div class="p-6">
       <h1 class="text-xl font-bold text-gray-800 mb-4">File Assignment</h1>
 
@@ -146,7 +146,7 @@
                   class="bg-teal-600 text-white text-xs font-medium px-4 py-2 rounded-md hover:bg-teal-700 transition-colors">Apply</button>
               </div>
             </div> -->
-            <div>
+            <div class="flex gap-2">
               <label class="block text-xs font-medium text-gray-600 mb-1">Contact Number</label>
               <div class="relative">
                 <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" fill="none"
@@ -157,7 +157,13 @@
                 <input type="text" placeholder="Enter Contact Number..."
                   class="w-full text-xs border border-gray-300 rounded-md pl-8 pr-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
               </div>
+              <button class="bg-teal-600 text-white text-xs font-medium px-4 py-2 rounded-md flex items-center gap-1.5 hover:bg-[#008A9A] transition-colors">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35"/></svg>
+                  Search
+                </button>
             </div>
+            
+            
           </div>
         </div>
           <div class="overflow-x-auto">
@@ -232,7 +238,7 @@
       <!-- ============================================================ -->
       <div id="pane-assigned-to-me" class="hidden space-y-4">
         <!-- Summary Cards -->
-        <div class="grid grid-cols-4 gap-4">
+        <!-- <div class="grid grid-cols-4 gap-4">
           <div class="bg-white rounded-lg border border-gray-200 p-4">
             <div class="text-2xl font-bold text-teal-600">12</div>
             <div class="text-xs text-gray-500 mt-0.5">Total Assigned</div>
@@ -249,45 +255,66 @@
             <div class="text-2xl font-bold text-green-500">4</div>
             <div class="text-xs text-gray-500 mt-0.5">Completed Today</div>
           </div>
-        </div>
+        </div> -->
 
-        <!-- Search & Filter -->
-        <div class="bg-white rounded-lg border border-gray-200 p-4">
-          <div class="flex items-center gap-3">
-            <div class="relative flex-1">
-              <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" fill="none"
-                stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <circle cx="11" cy="11" r="8" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35" />
-              </svg>
-              <input type="text" placeholder="Search by Claim / Reference Number..."
-                class="w-full text-xs border border-gray-300 rounded-md pl-8 pr-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
-            </div>
-            <select
-              class="text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-500">
-              <option>All Status</option>
-              <option>In Progress</option>
-              <option>Pending</option>
-              <option>Completed</option>
-            </select>
-            <input type="date"
-              class="text-xs border border-gray-300 rounded-md px-2 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
-            <span class="text-xs text-gray-400">to</span>
-            <input type="date"
-              class="text-xs border border-gray-300 rounded-md px-2 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
-            <button
-              class="bg-teal-600 text-white text-xs font-medium px-4 py-2 rounded-md hover:bg-teal-700 transition-colors">Filter</button>
-          </div>
-        </div>
 
         <!-- Assigned to Me Table -->
         <div class="bg-white rounded-lg border border-gray-200">
           <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200">
-            <h2 class="text-sm font-semibold text-gray-800">My Assigned Files</h2>
+            <h2 class="text-sm font-semibold text-gray-800">Assigned to Me </h2>
             <span
               class="bg-red-100 text-red-600 text-xs font-semibold px-2.5 py-1 rounded-full border border-red-200">12
               records found</span>
           </div>
+          <div class="bg-white rounded-lg  p-4">
+          <div class="grid grid-cols-3 gap-4 items-end">
+            
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Date Range</label>
+              <div class="flex items-center gap-2">
+                <input type="date"
+                  class="flex-1 text-xs border border-gray-300 rounded-md px-2 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                <span class="text-xs text-gray-400">to</span>
+                <input type="date"
+                  class="flex-1 text-xs border border-gray-300 rounded-md px-2 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Claim / Reference Number</label>
+              <div class="relative">
+                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" fill="none"
+                  stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="8" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35" />
+                </svg>
+                <input type="text" placeholder="Enter Number..."
+                  class="w-full text-xs border border-gray-300 rounded-md pl-8 pr-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+              </div>
+            </div>
+
+            <div class="flex gap-2">
+              <label class="block text-xs font-medium text-gray-600 mb-1">Contact Number</label>
+              <div class="relative">
+                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" fill="none"
+                  stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="8" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35" />
+                </svg>
+                <input type="text" placeholder="Enter Contact Number..."
+                  class="w-full text-xs border border-gray-300 rounded-md pl-8 pr-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+              </div>
+              <button class="bg-teal-600 text-white text-xs font-medium px-4 py-2 rounded-md flex items-center gap-1.5 hover:bg-[#008A9A] transition-colors flex">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35"/></svg>
+                  Search
+                </button>
+            </div>
+            
+            </div>
+            
+            </div>
+
+
+            <!-- Table Component -->
           <div class="overflow-x-auto">
             <table class="w-full text-xs">
               <thead class="bg-gray-50 border-b border-gray-200">
@@ -295,13 +322,9 @@
                   <th class="w-10 px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></th>
                   <th class="px-3 py-3 text-left text-gray-600 font-medium">Claim Number</th>
                   <th class="px-3 py-3 text-left text-gray-600 font-medium">Ref Number</th>
-                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Insured Name</th>
                   <th class="px-3 py-3 text-left text-gray-600 font-medium">Assigned Date</th>
-                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Task</th>
-                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Due Date</th>
-                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Aging (Days)</th>
-                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Status</th>
-                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Action</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Assigned By</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Accept File Status</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-100">
@@ -309,46 +332,41 @@
                   <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
                   <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05238</td>
                   <td class="px-3 py-3 text-gray-800">REF-2024-05238</td>
-                  <td class="px-3 py-3 font-medium text-gray-800">Acme Manufacturing Ltd.</td>
                   <td class="px-3 py-3 text-gray-600">Jan 16, 2024</td>
-                  <td class="px-3 py-3 text-gray-600">Survey Report Review</td>
-                  <td class="px-3 py-3 text-gray-600">Jan 23, 2024</td>
-                  <td class="px-3 py-3"><span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded font-semibold">3
-                      days</span></td>
-                  <td class="px-3 py-3"><span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-medium">In
-                      Progress</span></td>
-                  <td class="px-3 py-3"><button class="text-teal-600 hover:text-teal-800 font-medium">Update</button>
-                  </td>
+                  <td class="px-3 py-3"> <select name="assign_to" id="assign_to">
+                    <option value="">Select</option>
+                    <option value="john_doe">John Doe</option>
+                    <option value="jane_smith">Jane Smith</option>
+                  </select></td>
+                  <td class="px-3 py-3"><button
+                      class="bg-teal-600 text-white text-xs px-2.5 py-1 rounded hover:bg-teal-700">Assign File</button></td>
                 </tr>
                 <tr class="hover:bg-gray-50 bg-gray-50/50">
                   <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
                   <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05241</td>
                   <td class="px-3 py-3 text-gray-800">REF-2024-05241</td>
-                  <td class="px-3 py-3 font-medium text-gray-800">Blue Ocean Pvt Ltd.</td>
                   <td class="px-3 py-3 text-gray-600">Jan 14, 2024</td>
-                  <td class="px-3 py-3 text-gray-600">Document Verification</td>
-                  <td class="px-3 py-3 text-red-600 font-medium">Jan 15, 2024</td>
-                  <td class="px-3 py-3"><span class="bg-red-100 text-red-700 px-2 py-0.5 rounded font-semibold">7
-                      days</span></td>
-                  <td class="px-3 py-3"><span
-                      class="bg-red-100 text-red-700 px-2 py-0.5 rounded font-medium">Overdue</span></td>
-                  <td class="px-3 py-3"><button class="text-teal-600 hover:text-teal-800 font-medium">Update</button>
-                  </td>
+                  <td class="px-3 py-3"> <select name="assign_to" id="assign_to">
+                    <option value="">Select</option>
+                    <option value="john_doe">John Doe</option>
+                    <option value="jane_smith">Jane Smith</option>
+                  </select></td>
+                  <td class="px-3 py-3"><button
+                      class="bg-teal-600 text-white text-xs px-2.5 py-1 rounded hover:bg-teal-700">Assign File</button></td>
                 </tr>
                 <tr class="hover:bg-gray-50">
                   <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
                   <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05244</td>
                   <td class="px-3 py-3 text-gray-800">REF-2024-05244</td>
-                  <td class="px-3 py-3 font-medium text-gray-800">Star Logistics Ltd.</td>
                   <td class="px-3 py-3 text-gray-600">Jan 17, 2024</td>
-                  <td class="px-3 py-3 text-gray-600">Claim Assessment</td>
-                  <td class="px-3 py-3 text-gray-600">Jan 25, 2024</td>
-                  <td class="px-3 py-3"><span class="bg-green-100 text-green-700 px-2 py-0.5 rounded font-semibold">1
-                      day</span></td>
-                  <td class="px-3 py-3"><span
-                      class="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded font-medium">Pending</span></td>
-                  <td class="px-3 py-3"><button class="text-teal-600 hover:text-teal-800 font-medium">Update</button>
-                  </td>
+                  <td class="px-3 py-3"> <select name="assign_to" id="assign_to">
+                    <option value="">Select</option>
+                    <option value="john_doe">John Doe</option>
+                    <option value="jane_smith">Jane Smith</option>
+                  </select></td>
+                  <td class="px-3 py-3"><button
+                      class="bg-teal-600 text-white text-xs px-2.5 py-1 rounded hover:bg-teal-700">Assign File</button></td>
+                  
                 </tr>
               </tbody>
             </table>
@@ -374,11 +392,77 @@
                 </svg></button>
             </div>
           </div>
+          
         </div>
+        <div class="bg-white rounded-lg border border-gray-200 p-4">
+          <div class="grid grid-cols-5 gap-3 mb-4">
+            <div><label class="block text-xs font-medium text-gray-600 mb-1">Insured Name</label><input type="text"
+                placeholder="Enter Task Name"
+                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            </div>
+             <div><label class="block text-xs font-medium text-gray-600 mb-1">Date Of Loss</label><input
+                type="date"
+                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            </div>
+            <div><label class="block text-xs font-medium text-gray-600 mb-1">Assignee Role</label><select
+                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-500">
+                <option>Select Role</option>
+                <option>Loss Adjuster</option>
+                <option>Risk Engineer</option>
+                <option>Reinsurance Dept</option>
+              </select></div>
+            <div><label class="block text-xs font-medium text-gray-600 mb-1">Assign To (Officer Name)</label><select
+                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-500">
+                <option>Select Officer</option>
+                <option>Udantha Sandaru</option>
+                <option>Chamodi Rathnayeka</option>
+                <option>Ashani Kalansooriya</option>
+              </select></div>
+            <div><label class="block text-xs font-medium text-gray-600 mb-1">Priority</label><select
+                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500">
+                <option>Normal</option>
+                <option>High</option>
+                <option>Urgent</option>
+              </select></div>
+           
+          </div>
+          <div
+            class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center mb-3 hover:border-teal-400 transition-colors cursor-pointer">
+            <svg class="w-10 h-10 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" stroke-width="1.5"
+              viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+            </svg>
+            <p class="text-xs text-gray-500">Click to upload or drag and drop</p>
+            <p class="text-xs text-gray-400 mt-0.5">PDF, DOC, DOCX, JPG, PNG (Max 10MB)</p>
+          </div>
+          <div class="flex items-center justify-between">
+            <button
+              class="bg-teal-600 text-white text-xs font-medium px-4 py-2 rounded-md flex items-center gap-1.5 hover:bg-teal-700 transition-colors">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+              </svg>
+              Upload Screenshot
+            </button>
+            <div class="flex items-center gap-3">
+              <label class="flex items-center gap-2 text-xs text-gray-600 cursor-pointer"><input type="checkbox"
+                  class="rounded border-gray-300" /> Attach claim documents to email notification</label>
+              <button
+                class="bg-teal-600 text-white text-xs font-medium px-4 py-2 rounded-md flex items-center gap-1.5 hover:bg-teal-700 transition-colors">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                </svg>
+                Assign File
+              </button>
+            </div>
+
+
       </div>
 
+
       <!-- ============================================================ -->
-      <!-- TAB 3: TASK HANDLING (default active)                         -->
+      <!-- TAB 3: TASK HANDLING                        -->
       <!-- ============================================================ -->
       <div id="pane-task-handling" class="space-y-5">
         <!-- Filters -->
@@ -415,6 +499,7 @@
                   Filters</button>
               </div>
             </div>
+            
           </div>
         </div>
 
@@ -494,10 +579,13 @@
 
         <!-- Assignment Actions -->
         <div class="bg-white rounded-lg border border-gray-200 p-4">
-          <h2 class="text-sm font-semibold text-gray-800 mb-4">Assignment Actions</h2>
           <div class="grid grid-cols-5 gap-3 mb-4">
-            <div><label class="block text-xs font-medium text-gray-600 mb-1">Task Name</label><input type="text"
+            <div><label class="block text-xs font-medium text-gray-600 mb-1">Insured Name</label><input type="text"
                 placeholder="Enter Task Name"
+                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            </div>
+            <div><label class="block text-xs font-medium text-gray-600 mb-1">Expected Completion</label><input
+                type="date"
                 class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
             </div>
             <div><label class="block text-xs font-medium text-gray-600 mb-1">Assignee Role</label><select
@@ -520,10 +608,7 @@
                 <option>High</option>
                 <option>Urgent</option>
               </select></div>
-            <div><label class="block text-xs font-medium text-gray-600 mb-1">Expected Completion</label><input
-                type="date"
-                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
-            </div>
+            
           </div>
           <div
             class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center mb-3 hover:border-teal-400 transition-colors cursor-pointer">
