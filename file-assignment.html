@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>File / Task Assignment — Insurance Claims Portal</title>
+  <meta name="description" content="Manage file and task assignments for insurance claims." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: { 600: '#00ADBB', 700: '#008A9A', 50: '#f0fdfa' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+
+  <!-- NAVBAR -->
+  <header class="fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 flex items-center px-5 z-50">
+    <div class="flex items-center gap-2">
+      <button onclick="window.toggleSidebar()" class="p-1 mr-2 text-gray-500 hover:text-teal-600 transition-colors"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg></button><div class="w-7 h-7 bg-teal-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">I</div>
+      <span class="font-semibold text-gray-800 text-sm">Insurance Claims Portal</span>
+    </div>
+    <div class="ml-auto flex items-center gap-4">
+      <button class="relative p-2 text-gray-500 hover:text-teal-600">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg>
+        <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+      </button>
+      <div class="flex items-center gap-2 cursor-pointer" onclick="location.href='settings.html'">
+        <img src="https://ui-avatars.com/api/?name=Ranga+Karunanayake&background=0d9488&color=fff&size=64"
+          class="w-8 h-8 rounded-full" alt="Avatar" />
+        <div class="text-right">
+          <div class="text-xs font-semibold text-gray-800 leading-tight">Ranga</div>
+          <div class="text-xs text-gray-500 leading-tight">Karunanayake</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div id="sidebar-container"></div>
+  <script src="sidebar-component.js"></script>
+
+  <main class="ml-56 pt-16 min-h-screen">
+    <div class="p-6">
+      <h1 class="text-xl font-bold text-gray-800 mb-4">File Assignment</h1>
+
+      <!-- ===== TAB BUTTONS ===== -->
+      <div class="flex gap-1.5 mb-5 flex-wrap">
+        <button onclick="switchTab('received-files')" id="tab-received-files"
+          class="file-tab px-4 py-2 rounded-md text-xs font-medium border border-gray-300 text-gray-600  hover:bg-teal-700 transition-all">Received
+          Files</button>
+        <button onclick="switchTab('assigned-to-me')" id="tab-assigned-to-me"
+          class="file-tab px-4 py-2 rounded-md text-xs font-medium border border-gray-300 text-gray-600 bg-white hover:bg-teal-700 transition-all">Assigned
+          to me</button>
+        <button onclick="switchTab('task-handling')" id="tab-task-handling"
+          class="file-tab px-4 py-2 rounded-md text-xs font-medium bg-teal-600 text-white shadow-sm">Task
+          Handling</button>
+        <button onclick="switchTab('manual-task')" id="tab-manual-task"
+          class="file-tab px-4 py-2 rounded-md text-xs font-medium border border-gray-300 text-gray-600 bg-white hover:bg-gray-50 transition-all">Manual
+          Task Accept</button>
+        <button onclick="switchTab('final-close')" id="tab-final-close"
+          class="file-tab px-4 py-2 rounded-md text-xs font-medium border border-gray-300 text-gray-600 bg-white hover:bg-gray-50 transition-all">Final
+          Close</button>
+        <button onclick="switchTab('file-reopening')" id="tab-file-reopening"
+          class="file-tab px-4 py-2 rounded-md text-xs font-medium border border-gray-300 text-gray-600 bg-white hover:bg-gray-50 transition-all">File
+          Reopening</button>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- TAB 1: RECEIVED FILES                                         -->
+      <!-- ============================================================ -->
+      <div id="pane-received-files" class="hidden space-y-4">
+        <!-- Filters -->
+        
+
+        <!-- Received Files Table -->
+        <div class="bg-white rounded-lg border border-gray-200">
+          <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+            <h2 class="text-sm font-semibold text-gray-800">Assigned Files</h2>
+            <div class="flex items-center gap-2">
+              <button
+                class="flex items-center gap-1.5 text-xs text-gray-600 border border-gray-300 rounded-md px-3 py-1.5 hover:bg-gray-50">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Export
+              </button>
+              <span
+                class="bg-red-100 text-red-600 text-xs font-semibold px-2.5 py-1 rounded-full border border-red-200">9
+                records found</span>
+            </div>
+          </div>
+          <div class="bg-white rounded-lg  p-4">
+          <div class="grid grid-cols-3 gap-4 items-end">
+            
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Date Range</label>
+              <div class="flex items-center gap-2">
+                <input type="date"
+                  class="flex-1 text-xs border border-gray-300 rounded-md px-2 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                <span class="text-xs text-gray-400">to</span>
+                <input type="date"
+                  class="flex-1 text-xs border border-gray-300 rounded-md px-2 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Claim / Reference Number</label>
+              <div class="relative">
+                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" fill="none"
+                  stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="8" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35" />
+                </svg>
+                <input type="text" placeholder="Enter Number..."
+                  class="w-full text-xs border border-gray-300 rounded-md pl-8 pr-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+              </div>
+            </div>
+            <!-- <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Department</label>
+              <div class="flex gap-2">
+                <select
+                  class="flex-1 text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-500">
+                  <option>All Departments</option>
+                  <option>Fire</option>
+                  <option>Marine</option>
+                  <option>Engineering</option>
+                </select>
+                <button
+                  class="bg-teal-600 text-white text-xs font-medium px-4 py-2 rounded-md hover:bg-teal-700 transition-colors">Apply</button>
+              </div>
+            </div> -->
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Contact Number</label>
+              <div class="relative">
+                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" fill="none"
+                  stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="8" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35" />
+                </svg>
+                <input type="text" placeholder="Enter Contact Number..."
+                  class="w-full text-xs border border-gray-300 rounded-md pl-8 pr-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+              </div>
+            </div>
+          </div>
+        </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs">
+              <thead class="bg-gray-50 border-b border-gray-200">
+                <tr>
+                  <th class="w-10 px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Claim Number</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Ref Number</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Assigned Date</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Assigned By</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Accept By Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <tr class="hover:bg-gray-50">
+                  <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
+                  <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05238</td>
+                  <td class="px-3 py-3 text-gray-800">REF-2024-05238</td>
+                  <td class="px-3 py-3 text-gray-600">Jan 15, 2024</td>
+                  <td class="px-3 py-3 font-medium text-gray-800">Acme Manufacturing Ltd.</td>
+                  <td class="px-3 py-3"><button
+                      class="bg-teal-600 text-white text-xs px-2.5 py-1 rounded hover:bg-teal-700">Assign</button></td>
+                </tr>
+                <tr class="hover:bg-gray-50 bg-gray-50/50">
+                  <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
+                  <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05239</td>
+                  <td class="px-3 py-3 text-gray-800">REF-2024-05239</td>
+                  <td class="px-3 py-3 text-gray-600">Jan 15, 2024</td>
+                  <td class="px-3 py-3 font-medium text-gray-800">Global Shipping Corp.</td>
+                  <td class="px-3 py-3"><button
+                      class="bg-teal-600 text-white text-xs px-2.5 py-1 rounded hover:bg-teal-700">Assign</button></td>
+                </tr>
+                <tr class="hover:bg-gray-50">
+                  <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
+                  <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05240</td>
+                  <td class="px-3 py-3 text-gray-800">REF-2024-05240</td>
+                  <td class="px-3 py-3 text-gray-600">Jan 16, 2024</td>
+                  <td class="px-3 py-3 font-medium text-gray-800">Metro Transport Inc.</td>
+                  <td class="px-3 py-3"><button
+                      class="bg-teal-600 text-white text-xs px-2.5 py-1 rounded hover:bg-teal-700">Assign</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="flex items-center justify-between px-4 py-3 border-t border-gray-200">
+            <span class="text-xs text-gray-500">Showing 1 to 3 of 9 results</span>
+            <div class="flex items-center gap-1">
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-500 hover:bg-gray-50"><svg
+                  class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg></button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded bg-teal-600 text-white text-xs font-medium">1</button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-600 text-xs hover:bg-gray-50">2</button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-600 text-xs hover:bg-gray-50">3</button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-500 hover:bg-gray-50"><svg
+                  class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- TAB 2: ASSIGNED TO ME                                         -->
+      <!-- ============================================================ -->
+      <div id="pane-assigned-to-me" class="hidden space-y-4">
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-4 gap-4">
+          <div class="bg-white rounded-lg border border-gray-200 p-4">
+            <div class="text-2xl font-bold text-teal-600">12</div>
+            <div class="text-xs text-gray-500 mt-0.5">Total Assigned</div>
+          </div>
+          <div class="bg-white rounded-lg border border-gray-200 p-4">
+            <div class="text-2xl font-bold text-amber-500">5</div>
+            <div class="text-xs text-gray-500 mt-0.5">In Progress</div>
+          </div>
+          <div class="bg-white rounded-lg border border-gray-200 p-4">
+            <div class="text-2xl font-bold text-red-500">3</div>
+            <div class="text-xs text-gray-500 mt-0.5">Overdue</div>
+          </div>
+          <div class="bg-white rounded-lg border border-gray-200 p-4">
+            <div class="text-2xl font-bold text-green-500">4</div>
+            <div class="text-xs text-gray-500 mt-0.5">Completed Today</div>
+          </div>
+        </div>
+
+        <!-- Search & Filter -->
+        <div class="bg-white rounded-lg border border-gray-200 p-4">
+          <div class="flex items-center gap-3">
+            <div class="relative flex-1">
+              <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" fill="none"
+                stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35" />
+              </svg>
+              <input type="text" placeholder="Search by Claim / Reference Number..."
+                class="w-full text-xs border border-gray-300 rounded-md pl-8 pr-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            </div>
+            <select
+              class="text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-500">
+              <option>All Status</option>
+              <option>In Progress</option>
+              <option>Pending</option>
+              <option>Completed</option>
+            </select>
+            <input type="date"
+              class="text-xs border border-gray-300 rounded-md px-2 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            <span class="text-xs text-gray-400">to</span>
+            <input type="date"
+              class="text-xs border border-gray-300 rounded-md px-2 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            <button
+              class="bg-teal-600 text-white text-xs font-medium px-4 py-2 rounded-md hover:bg-teal-700 transition-colors">Filter</button>
+          </div>
+        </div>
+
+        <!-- Assigned to Me Table -->
+        <div class="bg-white rounded-lg border border-gray-200">
+          <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+            <h2 class="text-sm font-semibold text-gray-800">My Assigned Files</h2>
+            <span
+              class="bg-red-100 text-red-600 text-xs font-semibold px-2.5 py-1 rounded-full border border-red-200">12
+              records found</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs">
+              <thead class="bg-gray-50 border-b border-gray-200">
+                <tr>
+                  <th class="w-10 px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Claim Number</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Ref Number</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Insured Name</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Assigned Date</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Task</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Due Date</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Aging (Days)</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Status</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Action</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <tr class="hover:bg-gray-50">
+                  <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
+                  <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05238</td>
+                  <td class="px-3 py-3 text-gray-800">REF-2024-05238</td>
+                  <td class="px-3 py-3 font-medium text-gray-800">Acme Manufacturing Ltd.</td>
+                  <td class="px-3 py-3 text-gray-600">Jan 16, 2024</td>
+                  <td class="px-3 py-3 text-gray-600">Survey Report Review</td>
+                  <td class="px-3 py-3 text-gray-600">Jan 23, 2024</td>
+                  <td class="px-3 py-3"><span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded font-semibold">3
+                      days</span></td>
+                  <td class="px-3 py-3"><span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-medium">In
+                      Progress</span></td>
+                  <td class="px-3 py-3"><button class="text-teal-600 hover:text-teal-800 font-medium">Update</button>
+                  </td>
+                </tr>
+                <tr class="hover:bg-gray-50 bg-gray-50/50">
+                  <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
+                  <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05241</td>
+                  <td class="px-3 py-3 text-gray-800">REF-2024-05241</td>
+                  <td class="px-3 py-3 font-medium text-gray-800">Blue Ocean Pvt Ltd.</td>
+                  <td class="px-3 py-3 text-gray-600">Jan 14, 2024</td>
+                  <td class="px-3 py-3 text-gray-600">Document Verification</td>
+                  <td class="px-3 py-3 text-red-600 font-medium">Jan 15, 2024</td>
+                  <td class="px-3 py-3"><span class="bg-red-100 text-red-700 px-2 py-0.5 rounded font-semibold">7
+                      days</span></td>
+                  <td class="px-3 py-3"><span
+                      class="bg-red-100 text-red-700 px-2 py-0.5 rounded font-medium">Overdue</span></td>
+                  <td class="px-3 py-3"><button class="text-teal-600 hover:text-teal-800 font-medium">Update</button>
+                  </td>
+                </tr>
+                <tr class="hover:bg-gray-50">
+                  <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
+                  <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05244</td>
+                  <td class="px-3 py-3 text-gray-800">REF-2024-05244</td>
+                  <td class="px-3 py-3 font-medium text-gray-800">Star Logistics Ltd.</td>
+                  <td class="px-3 py-3 text-gray-600">Jan 17, 2024</td>
+                  <td class="px-3 py-3 text-gray-600">Claim Assessment</td>
+                  <td class="px-3 py-3 text-gray-600">Jan 25, 2024</td>
+                  <td class="px-3 py-3"><span class="bg-green-100 text-green-700 px-2 py-0.5 rounded font-semibold">1
+                      day</span></td>
+                  <td class="px-3 py-3"><span
+                      class="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded font-medium">Pending</span></td>
+                  <td class="px-3 py-3"><button class="text-teal-600 hover:text-teal-800 font-medium">Update</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="flex items-center justify-between px-4 py-3 border-t border-gray-200">
+            <span class="text-xs text-gray-500">Showing 1 to 3 of 12 results</span>
+            <div class="flex items-center gap-1">
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-500 hover:bg-gray-50"><svg
+                  class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg></button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded bg-teal-600 text-white text-xs font-medium">1</button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-600 text-xs hover:bg-gray-50">2</button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-600 text-xs hover:bg-gray-50">3</button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-500 hover:bg-gray-50"><svg
+                  class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- TAB 3: TASK HANDLING (default active)                         -->
+      <!-- ============================================================ -->
+      <div id="pane-task-handling" class="space-y-5">
+        <!-- Filters -->
+        <div class="bg-white rounded-lg border border-gray-200 p-4">
+          <h3 class="text-sm font-semibold text-gray-800 mb-3">Filters</h3>
+          <div class="grid grid-cols-3 gap-4 items-end">
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Claim/Reference/Policy Number</label>
+              <div class="relative">
+                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" fill="none"
+                  stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="8" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35" />
+                </svg>
+                <input type="text" placeholder="Enter Number..."
+                  class="w-full text-xs border border-gray-300 rounded-md pl-8 pr-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Contact Number (Claim-Intimated)</label>
+              <input type="text" placeholder="Enter Contact Number"
+                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Date Range</label>
+              <div class="flex items-center gap-2">
+                <input type="date"
+                  class="flex-1 text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                <span class="text-xs text-gray-400">to</span>
+                <input type="date"
+                  class="flex-1 text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                <button
+                  class="bg-teal-600 text-white text-xs font-medium px-4 py-2 rounded-md hover:bg-teal-700 transition-colors whitespace-nowrap">Apply
+                  Filters</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Assigned to Member Table -->
+        <div class="bg-white rounded-lg border border-gray-200">
+          <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+            <h2 class="text-sm font-semibold text-gray-800">Assigned to Member</h2>
+            <span
+              class="bg-red-100 text-red-600 text-xs font-semibold px-2.5 py-1 rounded-full border border-red-200">14
+              records found</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs">
+              <thead class="bg-gray-50 border-b border-gray-200">
+                <tr>
+                  <th class="w-10 px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Claim Number</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Ref Number</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Assigned Date</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Assigned by</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Officer Code</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <tr class="hover:bg-gray-50">
+                  <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
+                  <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05238</td>
+                  <td class="px-3 py-3 text-gray-800">REF-2024-05238</td>
+                  <td class="px-3 py-3 text-gray-600">Jan 15, 2024</td>
+                  <td class="px-3 py-3 text-gray-800">Chamal Achintha</td>
+                  <td class="px-3 py-3 text-gray-600">G60582</td>
+                </tr>
+                <tr class="hover:bg-gray-50 bg-gray-50/50">
+                  <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
+                  <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05239</td>
+                  <td class="px-3 py-3 text-gray-800">REF-2024-05239</td>
+                  <td class="px-3 py-3 text-gray-600">Jan 15, 2024</td>
+                  <td class="px-3 py-3 text-gray-800">Chamal Achintha</td>
+                  <td class="px-3 py-3 text-gray-600">G60582</td>
+                </tr>
+                <tr class="hover:bg-gray-50">
+                  <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
+                  <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05240</td>
+                  <td class="px-3 py-3 text-gray-800">REF-2024-05240</td>
+                  <td class="px-3 py-3 text-gray-600">Jan 15, 2024</td>
+                  <td class="px-3 py-3 text-gray-800">Chamal Achintha</td>
+                  <td class="px-3 py-3 text-gray-600">G60582</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="flex items-center justify-between px-4 py-3 border-t border-gray-200">
+            <span class="text-xs text-gray-500">Showing 1 to 3 of 14 results</span>
+            <div class="flex items-center gap-1">
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-500 hover:bg-gray-50"><svg
+                  class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg></button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded bg-teal-600 text-white text-xs font-medium">1</button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-600 text-xs hover:bg-gray-50">2</button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-600 text-xs hover:bg-gray-50">3</button>
+              <span class="text-xs text-gray-400 px-1">...</span>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-600 text-xs hover:bg-gray-50">5</button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-500 hover:bg-gray-50"><svg
+                  class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Assignment Actions -->
+        <div class="bg-white rounded-lg border border-gray-200 p-4">
+          <h2 class="text-sm font-semibold text-gray-800 mb-4">Assignment Actions</h2>
+          <div class="grid grid-cols-5 gap-3 mb-4">
+            <div><label class="block text-xs font-medium text-gray-600 mb-1">Task Name</label><input type="text"
+                placeholder="Enter Task Name"
+                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            </div>
+            <div><label class="block text-xs font-medium text-gray-600 mb-1">Assignee Role</label><select
+                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-500">
+                <option>Select Role</option>
+                <option>Loss Adjuster</option>
+                <option>Risk Engineer</option>
+                <option>Reinsurance Dept</option>
+              </select></div>
+            <div><label class="block text-xs font-medium text-gray-600 mb-1">Assign To (Officer Name)</label><select
+                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-500">
+                <option>Select Officer</option>
+                <option>Udantha Sandaru</option>
+                <option>Chamodi Rathnayeka</option>
+                <option>Ashani Kalansooriya</option>
+              </select></div>
+            <div><label class="block text-xs font-medium text-gray-600 mb-1">Priority</label><select
+                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500">
+                <option>Normal</option>
+                <option>High</option>
+                <option>Urgent</option>
+              </select></div>
+            <div><label class="block text-xs font-medium text-gray-600 mb-1">Expected Completion</label><input
+                type="date"
+                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            </div>
+          </div>
+          <div
+            class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center mb-3 hover:border-teal-400 transition-colors cursor-pointer">
+            <svg class="w-10 h-10 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" stroke-width="1.5"
+              viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+            </svg>
+            <p class="text-xs text-gray-500">Click to upload or drag and drop</p>
+            <p class="text-xs text-gray-400 mt-0.5">PDF, DOC, DOCX, JPG, PNG (Max 10MB)</p>
+          </div>
+          <div class="flex items-center justify-between">
+            <button
+              class="bg-teal-600 text-white text-xs font-medium px-4 py-2 rounded-md flex items-center gap-1.5 hover:bg-teal-700 transition-colors">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+              </svg>
+              Upload Screenshot
+            </button>
+            <div class="flex items-center gap-3">
+              <label class="flex items-center gap-2 text-xs text-gray-600 cursor-pointer"><input type="checkbox"
+                  class="rounded border-gray-300" /> Attach claim documents to email notification</label>
+              <button
+                class="bg-teal-600 text-white text-xs font-medium px-4 py-2 rounded-md flex items-center gap-1.5 hover:bg-teal-700 transition-colors">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                </svg>
+                Assign File
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Assigned to Me -->
+        <div class="bg-white rounded-lg border border-gray-200">
+          <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 flex-wrap gap-2">
+            <h2 class="text-sm font-semibold text-gray-800">Assigned to Me</h2>
+            <div class="flex items-center gap-2">
+              <div class="relative"><svg class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400"
+                  fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="8" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35" />
+                </svg><input type="text" placeholder="Search Category..."
+                  class="text-xs border border-gray-300 rounded-md pl-8 pr-3 py-1.5 w-40 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+              </div>
+              <input type="date"
+                class="text-xs border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+              <span class="text-xs text-gray-400">to</span>
+              <input type="date"
+                class="text-xs border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+              <button
+                class="bg-teal-600 text-white text-xs font-medium px-3 py-1.5 rounded-md hover:bg-teal-700 transition-colors">Filters</button>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs">
+              <thead class="bg-gray-50 border-b border-gray-200">
+                <tr>
+                  <th class="w-10 px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Claim Number</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Ref Number</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Date Received</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Insured Name</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Assignee</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Provider Category</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Assigned Date (Provider)</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Aging (Days)</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Comment</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <tr class="hover:bg-gray-50">
+                  <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
+                  <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05238</td>
+                  <td class="px-3 py-3 text-gray-800">REF-2024-05238</td>
+                  <td class="px-3 py-3 text-gray-600">Jan 15, 2024</td>
+                  <td class="px-3 py-3 text-gray-800">Acme Manufacturing Ltd.</td>
+                  <td class="px-3 py-3 text-gray-600">Udantha Sandaru</td>
+                  <td class="px-3 py-3 text-gray-600">Loss Adjusters</td>
+                  <td class="px-3 py-3 text-gray-600">Jan 15, 2024</td>
+                  <td class="px-3 py-3"><span
+                      class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-xs font-semibold">3 days</span></td>
+                  <td class="px-3 py-3 text-gray-600">Comment 1</td>
+                </tr>
+                <tr class="hover:bg-gray-50 bg-gray-50/50">
+                  <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
+                  <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05239</td>
+                  <td class="px-3 py-3 text-gray-800">REF-2024-05239</td>
+                  <td class="px-3 py-3 text-gray-600">Jan 15, 2024</td>
+                  <td class="px-3 py-3 text-gray-800">Global Shipping Corp.</td>
+                  <td class="px-3 py-3 text-gray-600">Chamodi Rathnayeka</td>
+                  <td class="px-3 py-3 text-gray-600">Risk Engineering</td>
+                  <td class="px-3 py-3 text-gray-600">Jan 15, 2024</td>
+                  <td class="px-3 py-3"><span
+                      class="bg-red-100 text-red-700 px-2 py-0.5 rounded text-xs font-semibold">7 days</span></td>
+                  <td class="px-3 py-3 text-gray-600">Comment 2</td>
+                </tr>
+                <tr class="hover:bg-gray-50">
+                  <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
+                  <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05240</td>
+                  <td class="px-3 py-3 text-gray-800">REF-2024-05240</td>
+                  <td class="px-3 py-3 text-gray-600">Jan 15, 2024</td>
+                  <td class="px-3 py-3 text-gray-800">Metro Transport Inc.</td>
+                  <td class="px-3 py-3 text-gray-600">Ashani Kalansooriya</td>
+                  <td class="px-3 py-3 text-gray-600">Reinsurance Department</td>
+                  <td class="px-3 py-3 text-gray-600">Jan 15, 2024</td>
+                  <td class="px-3 py-3"><span
+                      class="bg-red-100 text-red-700 px-2 py-0.5 rounded text-xs font-semibold">7 days</span></td>
+                  <td class="px-3 py-3 text-gray-600">Comment 3</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="flex items-center justify-between px-4 py-3 border-t border-gray-200">
+            <span class="text-xs text-gray-500">Showing 1 to 3 of 24 results</span>
+            <div class="flex items-center gap-1">
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-500 hover:bg-gray-50"><svg
+                  class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg></button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded bg-teal-600 text-white text-xs font-medium">1</button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-600 text-xs hover:bg-gray-50">2</button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-600 text-xs hover:bg-gray-50">3</button>
+              <span class="text-xs text-gray-400 px-1">...</span>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-600 text-xs hover:bg-gray-50">5</button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-500 hover:bg-gray-50"><svg
+                  class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- TAB 4: MANUAL TASK ACCEPT                                     -->
+      <!-- ============================================================ -->
+      <div id="pane-manual-task" class="hidden space-y-4">
+        <!-- Info Banner -->
+        <div class="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 flex items-center gap-3">
+          <svg class="w-5 h-5 text-amber-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <p class="text-xs text-amber-700">Tasks listed below require your <strong>manual acceptance</strong> before
+            work can begin. Please review and accept or reject each task.</p>
+        </div>
+
+        <!-- Filters -->
+        <div class="bg-white rounded-lg border border-gray-200 p-4">
+          <div class="flex items-center gap-3">
+            <div class="relative flex-1">
+              <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" fill="none"
+                stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35" />
+              </svg>
+              <input type="text" placeholder="Search Claim / Reference Number..."
+                class="w-full text-xs border border-gray-300 rounded-md pl-8 pr-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            </div>
+            <input type="date"
+              class="text-xs border border-gray-300 rounded-md px-2 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            <span class="text-xs text-gray-400">to</span>
+            <input type="date"
+              class="text-xs border border-gray-300 rounded-md px-2 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            <button
+              class="bg-teal-600 text-white text-xs font-medium px-4 py-2 rounded-md hover:bg-teal-700 transition-colors">Search</button>
+          </div>
+        </div>
+
+        <!-- Pending Tasks Table -->
+        <div class="bg-white rounded-lg border border-gray-200">
+          <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+            <h2 class="text-sm font-semibold text-gray-800">Pending Manual Acceptance</h2>
+            <div class="flex items-center gap-2">
+              <button
+                class="bg-teal-600 text-white text-xs font-medium px-3 py-1.5 rounded-md hover:bg-teal-700 transition-colors">Accept
+                All Selected</button>
+              <button
+                class="bg-white border border-red-300 text-red-600 text-xs font-medium px-3 py-1.5 rounded-md hover:bg-red-50 transition-colors">Reject
+                Selected</button>
+              <span
+                class="bg-red-100 text-red-600 text-xs font-semibold px-2.5 py-1 rounded-full border border-red-200">6
+                records found</span>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs">
+              <thead class="bg-gray-50 border-b border-gray-200">
+                <tr>
+                  <th class="w-10 px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Claim Number</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Ref Number</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Insured Name</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Task Name</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Assigned By</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Assigned Date</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Priority</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Action</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <tr class="hover:bg-gray-50">
+                  <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
+                  <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05238</td>
+                  <td class="px-3 py-3 text-gray-800">REF-2024-05238</td>
+                  <td class="px-3 py-3 font-medium text-gray-800">Acme Manufacturing Ltd.</td>
+                  <td class="px-3 py-3 text-gray-600">Site Survey Review</td>
+                  <td class="px-3 py-3 text-gray-600">Ranga Karunanayake</td>
+                  <td class="px-3 py-3 text-gray-600">Jan 16, 2024</td>
+                  <td class="px-3 py-3"><span
+                      class="bg-red-100 text-red-700 px-2 py-0.5 rounded font-semibold">High</span></td>
+                  <td class="px-3 py-3">
+                    <div class="flex gap-1.5">
+                      <button
+                        class="bg-teal-600 text-white text-xs px-2.5 py-1 rounded hover:bg-teal-700">Accept</button>
+                      <button
+                        class="bg-white border border-red-300 text-red-600 text-xs px-2.5 py-1 rounded hover:bg-red-50">Reject</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="hover:bg-gray-50 bg-gray-50/50">
+                  <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
+                  <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05245</td>
+                  <td class="px-3 py-3 text-gray-800">REF-2024-05245</td>
+                  <td class="px-3 py-3 font-medium text-gray-800">Blue Ocean Pvt Ltd.</td>
+                  <td class="px-3 py-3 text-gray-600">Document Collection</td>
+                  <td class="px-3 py-3 text-gray-600">Ranga Karunanayake</td>
+                  <td class="px-3 py-3 text-gray-600">Jan 16, 2024</td>
+                  <td class="px-3 py-3"><span
+                      class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded font-semibold">Normal</span></td>
+                  <td class="px-3 py-3">
+                    <div class="flex gap-1.5">
+                      <button
+                        class="bg-teal-600 text-white text-xs px-2.5 py-1 rounded hover:bg-teal-700">Accept</button>
+                      <button
+                        class="bg-white border border-red-300 text-red-600 text-xs px-2.5 py-1 rounded hover:bg-red-50">Reject</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="hover:bg-gray-50">
+                  <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
+                  <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05248</td>
+                  <td class="px-3 py-3 text-gray-800">REF-2024-05248</td>
+                  <td class="px-3 py-3 font-medium text-gray-800">Metro Transport Inc.</td>
+                  <td class="px-3 py-3 text-gray-600">Claim Assessment</td>
+                  <td class="px-3 py-3 text-gray-600">Ranga Karunanayake</td>
+                  <td class="px-3 py-3 text-gray-600">Jan 17, 2024</td>
+                  <td class="px-3 py-3"><span
+                      class="bg-green-100 text-green-700 px-2 py-0.5 rounded font-semibold">Low</span></td>
+                  <td class="px-3 py-3">
+                    <div class="flex gap-1.5">
+                      <button
+                        class="bg-teal-600 text-white text-xs px-2.5 py-1 rounded hover:bg-teal-700">Accept</button>
+                      <button
+                        class="bg-white border border-red-300 text-red-600 text-xs px-2.5 py-1 rounded hover:bg-red-50">Reject</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="flex items-center justify-between px-4 py-3 border-t border-gray-200">
+            <span class="text-xs text-gray-500">Showing 1 to 3 of 6 results</span>
+            <div class="flex items-center gap-1">
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-500 hover:bg-gray-50"><svg
+                  class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg></button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded bg-teal-600 text-white text-xs font-medium">1</button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-600 text-xs hover:bg-gray-50">2</button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-500 hover:bg-gray-50"><svg
+                  class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- TAB 5: FINAL CLOSE                                            -->
+      <!-- ============================================================ -->
+      <div id="pane-final-close" class="hidden space-y-4">
+        <!-- Info Banner -->
+        <div class="bg-teal-50 border border-teal-200 rounded-lg px-4 py-3 flex items-center gap-3">
+          <svg class="w-5 h-5 text-teal-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <p class="text-xs text-teal-700">These claims are ready for <strong>final closure</strong>. Review all details
+            carefully before confirming closure.</p>
+        </div>
+
+        <!-- Filters -->
+        <div class="bg-white rounded-lg border border-gray-200 p-4">
+          <div class="flex items-center gap-3">
+            <div class="relative flex-1">
+              <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" fill="none"
+                stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35" />
+              </svg>
+              <input type="text" placeholder="Search Claim / Reference Number..."
+                class="w-full text-xs border border-gray-300 rounded-md pl-8 pr-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            </div>
+            <select
+              class="text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-500">
+              <option>All Departments</option>
+              <option>Fire</option>
+              <option>Marine</option>
+              <option>Engineering</option>
+            </select>
+            <input type="date"
+              class="text-xs border border-gray-300 rounded-md px-2 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            <span class="text-xs text-gray-400">to</span>
+            <input type="date"
+              class="text-xs border border-gray-300 rounded-md px-2 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            <button
+              class="bg-teal-600 text-white text-xs font-medium px-4 py-2 rounded-md hover:bg-teal-700 transition-colors">Search</button>
+          </div>
+        </div>
+
+        <!-- Final Close Table -->
+        <div class="bg-white rounded-lg border border-gray-200">
+          <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+            <h2 class="text-sm font-semibold text-gray-800">Claims Ready for Final Close</h2>
+            <div class="flex items-center gap-2">
+              <button
+                class="flex items-center gap-1.5 text-xs text-gray-600 border border-gray-300 rounded-md px-3 py-1.5 hover:bg-gray-50">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>Export
+              </button>
+              <span
+                class="bg-red-100 text-red-600 text-xs font-semibold px-2.5 py-1 rounded-full border border-red-200">8
+                records found</span>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs">
+              <thead class="bg-gray-50 border-b border-gray-200">
+                <tr>
+                  <th class="w-10 px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Claim Number</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Ref Number</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Insured Name</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Department</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Claim Amount</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Settlement Amount</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Approved By</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Action</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <tr class="hover:bg-gray-50">
+                  <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
+                  <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05200</td>
+                  <td class="px-3 py-3 text-gray-800">REF-2024-05200</td>
+                  <td class="px-3 py-3 font-medium text-gray-800">Acme Manufacturing Ltd.</td>
+                  <td class="px-3 py-3 text-gray-600">Fire</td>
+                  <td class="px-3 py-3 text-gray-700">LKR 5,000,000</td>
+                  <td class="px-3 py-3 text-green-700 font-semibold">LKR 4,750,000</td>
+                  <td class="px-3 py-3 text-gray-600">GM Operations</td>
+                  <td class="px-3 py-3">
+                    <div class="flex gap-1.5">
+                      <button
+                        class="bg-teal-600 text-white text-xs px-2.5 py-1 rounded hover:bg-teal-700">Close</button>
+                      <button class="text-teal-600 text-xs hover:underline">View</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="hover:bg-gray-50 bg-gray-50/50">
+                  <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
+                  <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05205</td>
+                  <td class="px-3 py-3 text-gray-800">REF-2024-05205</td>
+                  <td class="px-3 py-3 font-medium text-gray-800">Star Logistics Ltd.</td>
+                  <td class="px-3 py-3 text-gray-600">Marine</td>
+                  <td class="px-3 py-3 text-gray-700">LKR 3,200,000</td>
+                  <td class="px-3 py-3 text-green-700 font-semibold">LKR 3,000,000</td>
+                  <td class="px-3 py-3 text-gray-600">GM Operations</td>
+                  <td class="px-3 py-3">
+                    <div class="flex gap-1.5">
+                      <button
+                        class="bg-teal-600 text-white text-xs px-2.5 py-1 rounded hover:bg-teal-700">Close</button>
+                      <button class="text-teal-600 text-xs hover:underline">View</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="hover:bg-gray-50">
+                  <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
+                  <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05210</td>
+                  <td class="px-3 py-3 text-gray-800">REF-2024-05210</td>
+                  <td class="px-3 py-3 font-medium text-gray-800">Blue Ocean Pvt Ltd.</td>
+                  <td class="px-3 py-3 text-gray-600">Engineering</td>
+                  <td class="px-3 py-3 text-gray-700">LKR 7,500,000</td>
+                  <td class="px-3 py-3 text-green-700 font-semibold">LKR 6,800,000</td>
+                  <td class="px-3 py-3 text-gray-600">DGM Claims</td>
+                  <td class="px-3 py-3">
+                    <div class="flex gap-1.5">
+                      <button
+                        class="bg-teal-600 text-white text-xs px-2.5 py-1 rounded hover:bg-teal-700">Close</button>
+                      <button class="text-teal-600 text-xs hover:underline">View</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="flex items-center justify-between px-4 py-3 border-t border-gray-200">
+            <span class="text-xs text-gray-500">Showing 1 to 3 of 8 results</span>
+            <div class="flex items-center gap-1">
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-500 hover:bg-gray-50"><svg
+                  class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg></button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded bg-teal-600 text-white text-xs font-medium">1</button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-600 text-xs hover:bg-gray-50">2</button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-600 text-xs hover:bg-gray-50">3</button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-500 hover:bg-gray-50"><svg
+                  class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- TAB 6: FILE REOPENING                                         -->
+      <!-- ============================================================ -->
+      <div id="pane-file-reopening" class="hidden space-y-4">
+        <!-- Info Banner -->
+        <div class="bg-purple-50 border border-purple-200 rounded-lg px-4 py-3 flex items-center gap-3">
+          <svg class="w-5 h-5 text-purple-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          <p class="text-xs text-purple-700">The following closed claims have <strong>reopening requests</strong>
+            pending review. Approve or reject each request below.</p>
+        </div>
+
+        <!-- Reopen Request Form -->
+        <div class="bg-white rounded-lg border border-gray-200 p-4">
+          <h2 class="text-sm font-semibold text-gray-800 mb-3">Submit Reopening Request</h2>
+          <div class="grid grid-cols-3 gap-4 mb-3">
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Claim Number</label>
+              <input type="text" placeholder="Enter Claim Number"
+                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Reason for Reopening</label>
+              <select
+                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-500">
+                <option>Select Reason</option>
+                <option>New Evidence Submitted</option>
+                <option>Incorrect Settlement Amount</option>
+                <option>Additional Damage Found</option>
+                <option>Legal Dispute</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Supporting Documents</label>
+              <div class="flex gap-2">
+                <input type="text" placeholder="No file chosen"
+                  class="flex-1 text-xs border border-gray-300 rounded-md px-3 py-2 text-gray-400" readonly />
+                <button
+                  class="bg-gray-100 border border-gray-300 text-gray-600 text-xs px-3 py-2 rounded-md hover:bg-gray-200">Browse</button>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="block text-xs font-medium text-gray-600 mb-1">Remarks</label>
+            <textarea rows="2" placeholder="Enter detailed reason for reopening this claim..."
+              class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none"></textarea>
+          </div>
+          <button
+            class="bg-teal-600 text-white text-xs font-medium px-4 py-2 rounded-md flex items-center gap-1.5 hover:bg-teal-700 transition-colors">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+            </svg>
+            Submit Reopening Request
+          </button>
+        </div>
+
+        <!-- Reopening Requests Table -->
+        <div class="bg-white rounded-lg border border-gray-200">
+          <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+            <h2 class="text-sm font-semibold text-gray-800">Reopening Requests — Pending Approval</h2>
+            <span class="bg-red-100 text-red-600 text-xs font-semibold px-2.5 py-1 rounded-full border border-red-200">4
+              records found</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs">
+              <thead class="bg-gray-50 border-b border-gray-200">
+                <tr>
+                  <th class="w-10 px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Claim Number</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Ref Number</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Insured Name</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Close Date</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Reopen Reason</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Requested By</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Request Date</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Action</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <tr class="hover:bg-gray-50">
+                  <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
+                  <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-04100</td>
+                  <td class="px-3 py-3 text-gray-800">REF-2024-04100</td>
+                  <td class="px-3 py-3 font-medium text-gray-800">Acme Manufacturing Ltd.</td>
+                  <td class="px-3 py-3 text-gray-600">Dec 20, 2023</td>
+                  <td class="px-3 py-3 text-gray-600">New Evidence Submitted</td>
+                  <td class="px-3 py-3 text-gray-600">Chamal Achintha</td>
+                  <td class="px-3 py-3 text-gray-600">Jan 15, 2024</td>
+                  <td class="px-3 py-3">
+                    <div class="flex gap-1.5">
+                      <button
+                        class="bg-teal-600 text-white text-xs px-2.5 py-1 rounded hover:bg-teal-700">Approve</button>
+                      <button
+                        class="bg-white border border-red-300 text-red-600 text-xs px-2.5 py-1 rounded hover:bg-red-50">Reject</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="hover:bg-gray-50 bg-gray-50/50">
+                  <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
+                  <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-04115</td>
+                  <td class="px-3 py-3 text-gray-800">REF-2024-04115</td>
+                  <td class="px-3 py-3 font-medium text-gray-800">Global Shipping Corp.</td>
+                  <td class="px-3 py-3 text-gray-600">Dec 28, 2023</td>
+                  <td class="px-3 py-3 text-gray-600">Additional Damage Found</td>
+                  <td class="px-3 py-3 text-gray-600">Nadun Perera</td>
+                  <td class="px-3 py-3 text-gray-600">Jan 16, 2024</td>
+                  <td class="px-3 py-3">
+                    <div class="flex gap-1.5">
+                      <button
+                        class="bg-teal-600 text-white text-xs px-2.5 py-1 rounded hover:bg-teal-700">Approve</button>
+                      <button
+                        class="bg-white border border-red-300 text-red-600 text-xs px-2.5 py-1 rounded hover:bg-red-50">Reject</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="flex items-center justify-between px-4 py-3 border-t border-gray-200">
+            <span class="text-xs text-gray-500">Showing 1 to 2 of 4 results</span>
+            <div class="flex items-center gap-1">
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-500 hover:bg-gray-50"><svg
+                  class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg></button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded bg-teal-600 text-white text-xs font-medium">1</button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-600 text-xs hover:bg-gray-50">2</button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-500 hover:bg-gray-50"><svg
+                  class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    renderSidebar('file-assignment');
+
+    const ALL_TABS = ['received-files', 'assigned-to-me', 'task-handling', 'manual-task', 'final-close', 'file-reopening'];
+
+    function switchTab(tabId) {
+      // Hide all panes
+      ALL_TABS.forEach(t => {
+        document.getElementById('pane-' + t).classList.add('hidden');
+      });
+      // Reset all tab buttons
+      document.querySelectorAll('.file-tab').forEach(btn => {
+        btn.classList.remove('bg-teal-600', 'text-white', 'shadow-sm');
+        btn.classList.add('bg-white', 'text-gray-600', 'border', 'border-gray-300');
+      });
+      // Show active pane
+      document.getElementById('pane-' + tabId).classList.remove('hidden');
+      // Highlight active tab button
+      const activeBtn = document.getElementById('tab-' + tabId);
+      activeBtn.classList.add('bg-teal-600', 'text-white', 'shadow-sm');
+      activeBtn.classList.remove('bg-white', 'text-gray-600', 'border', 'border-gray-300');
+    }
+
+    // Start on Task Handling tab
+    switchTab('received-files');
+  </script>
+</body>
+
+</html>
