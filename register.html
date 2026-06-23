@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registration — Insurance Claims Portal</title>
+  <meta name="description" content="Efficiently process and register pending claim intimations."/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>body { font-family: 'Inter', sans-serif; }</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+  <!-- TOP NAVBAR -->
+  <header class="fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 flex items-center px-5 z-50">
+    <div class="flex items-center gap-2">
+      <button onclick="window.toggleSidebar()" class="p-1 mr-2 text-gray-500 hover:text-teal-600 transition-colors"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg></button><div class="w-7 h-7 bg-teal-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">I</div>
+      <span class="font-semibold text-gray-800 text-sm">Insurance Claims Portal</span>
+    </div>
+    <div class="ml-auto flex items-center gap-4">
+      <button class="relative p-2 text-gray-500 hover:text-teal-600 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+        <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+      </button>
+      <div class="flex items-center gap-2 cursor-pointer" onclick="location.href='settings.html'">
+        <img src="https://ui-avatars.com/api/?name=Ranga+Karunanayake&background=0d9488&color=fff&size=64" class="w-8 h-8 rounded-full" alt="Avatar"/>
+        <div class="text-right">
+          <div class="text-xs font-semibold text-gray-800 leading-tight">Ranga</div>
+          <div class="text-xs text-gray-500 leading-tight">Karunanayake</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div id="sidebar-container"></div>
+  <script src="sidebar-component.js"></script>
+
+  <main class="ml-56 pt-16 min-h-screen">
+    <div class="p-6">
+
+      <!-- Sub-tabs -->
+      <div class="flex gap-2 mb-5">
+        <a href="intimation.html" class="px-5 py-2 rounded-md text-sm font-medium bg-white text-gray-600 border border-gray-300 hover:bg-gray-50 transition-all">Intimation</a>
+        <button class="px-5 py-2 rounded-md text-sm font-medium bg-teal-600 text-white shadow-sm">Registration</button>
+      </div>
+
+      <h1 class="text-xl font-bold text-gray-800">Registration</h1>
+      <p class="text-sm text-gray-500 mt-0.5 mb-5">Efficiently process and register pending claim intimations</p>
+
+      <!-- Filters -->
+      <div class="bg-white rounded-lg border border-gray-200 p-4 mb-5">
+        <div class="grid grid-cols-3 gap-4 items-end">
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Date Range</label>
+            <div class="flex items-center gap-2">
+              <input type="date" class="flex-1 text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"/>
+              <span class="text-xs text-gray-400">to</span>
+              <input type="date" class="flex-1 text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"/>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Reference/Policy/Claim Number</label>
+            <input type="text" placeholder="Enter Reference/Policy/Claim Number" class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"/>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Contact (Claim-Intimated)</label>
+            <div class="flex gap-2">
+              <input type="text" placeholder="Enter Contact Number" class="flex-1 text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"/>
+              <button class="bg-teal-600 text-white text-xs font-medium px-4 py-2 rounded-md flex items-center gap-1.5 hover:bg-teal-700 transition-colors">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35"/></svg>
+                Search
+              </button>
+              <button class="bg-white border border-gray-300 text-gray-600 text-xs px-3 py-2 rounded-md flex items-center gap-1.5 hover:bg-gray-50">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                Reset
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="bg-white rounded-lg border border-gray-200">
+        <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+          <h2 class="text-sm font-semibold text-gray-800">Claim Intimation Details</h2>
+          <div class="flex items-center gap-2">
+            <button class="flex items-center gap-1.5 text-xs text-gray-600 border border-gray-300 rounded-md px-3 py-1.5 hover:bg-gray-50">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              Export
+            </button>
+            <span class="bg-red-100 text-red-600 text-xs font-semibold px-2.5 py-1 rounded-full border border-red-200">14 records found</span>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs">
+            <thead class="bg-gray-50 border-b border-gray-200">
+              <tr>
+                <th class="w-10 px-4 py-3"><input type="checkbox" class="rounded border-gray-300"/></th>
+                <th class="px-3 py-3 text-left text-gray-600 font-medium">Insured Name</th>
+                <th class="px-3 py-3 text-left text-gray-600 font-medium">Contact Details</th>
+                <th class="px-3 py-3 text-left text-gray-600 font-medium">Date of Loss</th>
+                <th class="px-3 py-3 text-left text-gray-600 font-medium">Date of Intimation, number generated</th>
+                <th class="px-3 py-3 text-left text-gray-600 font-medium">Claim Number</th>
+                <th class="px-3 py-3 text-left text-gray-600 font-medium">Policy Number</th>
+                <th class="px-3 py-3 text-left text-gray-600 font-medium">Ref Number</th>
+                <th class="px-3 py-3 text-left text-gray-600 font-medium">Department</th>
+                <th class="px-3 py-3 text-left text-gray-600 font-medium">Event</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300"/></td>
+                <td class="px-3 py-3 font-medium text-gray-800">Chamal Achintha</td>
+                <td class="px-3 py-3 text-gray-600">077 123 1234<br/><span class="text-teal-600">chamal@gmail.com</span></td>
+                <td class="px-3 py-3 text-gray-600">Jan 15, 2024</td>
+                <td class="px-3 py-3 text-gray-600">Jan 15, 2024</td>
+                <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-0156</td>
+                <td class="px-3 py-3 text-gray-800">POL-2024-001234</td>
+                <td class="px-3 py-3 text-gray-800">REF-2024-001234</td>
+                <td class="px-3 py-3 text-gray-600">Fire</td>
+                <td class="px-3 py-3"><span class="bg-orange-100 text-orange-700 px-2 py-0.5 rounded text-xs font-medium">Riot</span></td>
+              </tr>
+              <tr class="hover:bg-gray-50 transition-colors bg-gray-50/50">
+                <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300"/></td>
+                <td class="px-3 py-3 font-medium text-gray-800">Chamal Achintha</td>
+                <td class="px-3 py-3 text-gray-600">077 123 1234<br/><span class="text-teal-600">chamal@gmail.com</span></td>
+                <td class="px-3 py-3 text-gray-600">Jan 15, 2024</td>
+                <td class="px-3 py-3 text-gray-600">Jan 15, 2024</td>
+                <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-0156</td>
+                <td class="px-3 py-3 text-gray-800">POL-2024-001223</td>
+                <td class="px-3 py-3 text-gray-800">REF-2024-001223</td>
+                <td class="px-3 py-3 text-gray-600">Fire</td>
+                <td class="px-3 py-3"><span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs font-medium">CAT</span></td>
+              </tr>
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300"/></td>
+                <td class="px-3 py-3 font-medium text-gray-800">Chamal Achintha</td>
+                <td class="px-3 py-3 text-gray-600">077 123 1234<br/><span class="text-teal-600">chamal@gmail.com</span></td>
+                <td class="px-3 py-3 text-gray-600">Jan 15, 2024</td>
+                <td class="px-3 py-3 text-gray-600">Jan 15, 2024</td>
+                <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-0156</td>
+                <td class="px-3 py-3 text-gray-800">POL-2024-001225</td>
+                <td class="px-3 py-3 text-gray-800">REF-2024-001225</td>
+                <td class="px-3 py-3 text-gray-600">Fire</td>
+                <td class="px-3 py-3"><span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs font-medium">CAT</span></td>
+              </tr>
+              <tr class="hover:bg-gray-50 transition-colors bg-gray-50/50">
+                <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300"/></td>
+                <td class="px-3 py-3 font-medium text-gray-800">Chamal Achintha</td>
+                <td class="px-3 py-3 text-gray-600">077 123 1234<br/><span class="text-teal-600">chamal@gmail.com</span></td>
+                <td class="px-3 py-3 text-gray-600">Jan 15, 2024</td>
+                <td class="px-3 py-3 text-gray-600">Jan 15, 2024</td>
+                <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-0156</td>
+                <td class="px-3 py-3 text-gray-800">POL-2024-001256</td>
+                <td class="px-3 py-3 text-gray-800">REF-2024-001256</td>
+                <td class="px-3 py-3 text-gray-600">Fire</td>
+                <td class="px-3 py-3"><span class="bg-orange-100 text-orange-700 px-2 py-0.5 rounded text-xs font-medium">Riot</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="flex items-center justify-between px-4 py-3 border-t border-gray-200">
+          <span class="text-xs text-gray-500">Showing 1 to 5 of 24 results</span>
+          <div class="flex items-center gap-1">
+            <button class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-500 hover:bg-gray-50"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></button>
+            <button class="w-7 h-7 flex items-center justify-center rounded bg-teal-600 text-white text-xs font-medium">1</button>
+            <button class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-600 text-xs hover:bg-gray-50">2</button>
+            <button class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-600 text-xs hover:bg-gray-50">3</button>
+            <span class="text-xs text-gray-400 px-1">...</span>
+            <button class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-600 text-xs hover:bg-gray-50">5</button>
+            <button class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-500 hover:bg-gray-50"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    renderSidebar('intimation');
+  </script>
+</body>
+</html>
