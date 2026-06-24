@@ -392,7 +392,144 @@
                 </svg></button>
             </div>
           </div>
+          
         </div>
+        <div class="bg-white rounded-lg border border-gray-200 p-4">
+          <div class="grid grid-cols-5 gap-3 mb-4">
+            <div><label class="block text-xs font-medium text-gray-600 mb-1">Insured Name</label><input type="text"
+                placeholder="Enter Task Name"
+                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            </div>
+            <div><label class="block text-xs font-medium text-gray-600 mb-1">Date Of Loss</label><input
+                type="date"
+                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-500" />
+            </div>
+            <div><label class="block text-xs font-medium text-gray-600 mb-1">Assignee Role</label><select
+                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-500">
+                <option>Select Role</option>
+                <option>Loss Adjuster</option>
+                <option>Risk Engineer</option>
+                <option>Reinsurance Dept</option>
+              </select></div>
+            <div><label class="block text-xs font-medium text-gray-600 mb-1">Assign To (Officer Name)</label><select
+                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-500">
+                <option>Select Officer</option>
+                <option>Udantha Sandaru</option>
+                <option>Chamodi Rathnayeka</option>
+                <option>Ashani Kalansooriya</option>
+              </select></div>
+            <div><label class="block text-xs font-medium text-gray-600 mb-1">Priority</label><select
+                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-500">
+                <option>Normal</option>
+                <option>High</option>
+                <option>Urgent</option>
+              </select></div>
+            
+          </div>
+          <div
+            class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center mb-3 hover:border-teal-400 transition-colors cursor-pointer">
+            <svg class="w-10 h-10 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" stroke-width="1.5"
+              viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+            </svg>
+            <p class="text-xs text-gray-500">Click to upload or drag and drop</p>
+            <p class="text-xs text-gray-400 mt-0.5">PDF, DOC, DOCX, JPG, PNG (Max 10MB)</p>
+            <button
+              class="bg-teal-600 text-white text-xs font-medium px-4 py-2 rounded-md flex gap-1.5 hover:bg-teal-700 transition-colors">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+              </svg>
+             Upload Screenshot
+            </button>
+          </div>
+          <div class="flex items-center justify-between">
+            
+            <div class="flex items-end gap-3">
+              <button
+                class="bg-teal-600 text-white text-xs font-medium px-4 py-2 rounded-md flex items-end gap-1.5 hover:bg-teal-700 transition-colors">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                </svg>
+                Assign File
+              </button>
+            </div>
+          </div>
+          
+        </div>
+        <div class="bg-white rounded-lg border border-gray-200">
+        <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+            <h2 class="text-sm font-semibold text-gray-800">Assigned File</h2>
+            <span
+              class="bg-red-100 text-red-600 text-xs font-semibold px-2.5 py-1 rounded-full border border-red-200">12
+              records found</span>
+          </div>
+
+            <!-- Table Component -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs">
+              <thead class="bg-gray-50 border-b border-gray-200">
+                <tr>
+                  <th class="w-10 px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Claim Number</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Ref Number</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Date Recieved</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Insured Name </th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Aging(Days)</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <tr class="hover:bg-gray-50">
+                  <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
+                  <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05238</td>
+                  <td class="px-3 py-3 text-gray-800">REF-2024-05238</td>
+                  <td class="px-3 py-3 text-gray-600">Jan 16, 2024</td>
+                  <td class="px-3 py-3 text-gray-800"><input type="text" class="border border-gray-300 rounded py-1 px-2" placeholder="Enter insured name" /></td>
+                  <td class="px-3 py-3"><span class="bg-green-100 text-gray-800 px-2 py-1 rounded">3 days</span></td>
+                </tr>
+                <tr class="hover:bg-gray-50 bg-gray-50/50">
+                  <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
+                  <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05241</td>
+                  <td class="px-3 py-3 text-gray-800">REF-2024-05241</td>
+                  <td class="px-3 py-3 text-gray-600">Jan 14, 2024</td>
+                  <td class="px-3 py-3 text-gray-800"><input type="text" class="border border-gray-300 rounded py-1 px-2" placeholder="Enter insured name" /></td>
+                  <td class="px-3 py-3"><span class="bg-yellow-100 text-gray-800 px-2 py-1 rounded">5 days</span></td>
+                </tr>
+                  
+                <tr class="hover:bg-gray-50">
+                  <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
+                  <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05244</td>
+                  <td class="px-3 py-3 text-gray-800">REF-2024-05244</td>
+                  <td class="px-3 py-3 text-gray-600">Jan 17, 2024</td>
+                  <td class="px-3 py-3 text-gray-800"><input type="text" class="border border-gray-300 rounded py-1 px-2" placeholder="Enter insured name" /></td>
+                  <td class="px-3 py-3 "><span class="bg-green-100 text-gray-800 px-2 py-1 rounded">3 days</span></td>
+                </tr>
+                     
+              </tbody>
+            </table>
+          </div>
+          <div class="flex items-center justify-between px-4 py-3 border-t border-gray-200">
+            <span class="text-xs text-gray-500">Showing 1 to 3 of 12 results</span>
+            <div class="flex items-center gap-1">
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-500 hover:bg-gray-50"><svg
+                  class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg></button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded bg-teal-600 text-white text-xs font-medium">1</button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-600 text-xs hover:bg-gray-50">2</button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-600 text-xs hover:bg-gray-50">3</button>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded border border-gray-300 text-gray-500 hover:bg-gray-50"><svg
+                  class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg></button>
+                </div>
+            </div>
       </div>
 
       <!-- ============================================================ -->
@@ -446,7 +583,7 @@
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
               </svg>
-              + Upload Screenshot
+              Upload Screenshot
             </button>
             <div class="flex items-center gap-3">
               <label class="flex items-center gap-2 text-xs text-gray-600 cursor-pointer"><input type="checkbox"
