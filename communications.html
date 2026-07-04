@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Communications — Insurance Claims Portal</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -17,435 +16,280 @@
       }
     }
   </script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>body { font-family: 'Inter', sans-serif; }</style>
 </head>
+<body class="bg-gray-50 min-h-screen pb-20">
+  <!-- NAVBAR -->
+  <div id="navbar-container"></div>
+  <script src="navbar-component.js"></script>
 
-<body class="bg-gray-50 min-h-screen">
-  <header class="fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 flex items-center px-5 z-50">
-    <div class="flex items-center gap-2">
-      <button onclick="window.toggleSidebar()" class="p-1 mr-2 text-gray-500 hover:text-teal-600 transition-colors"><svg
-          class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-        </svg></button>
-      <div class="w-7 h-7 bg-teal-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">I</div>
-      <span class="font-semibold text-gray-800 text-sm">Insurance Claims Portal</span>
-    </div>
-    <div class="ml-auto flex items-center gap-4">
-      <button class="relative p-2 text-gray-500 hover:text-teal-600">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-        </svg>
-        <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-      </button>
-      <div class="flex items-center gap-2 cursor-pointer" onclick="location.href='settings.html'">
-        <img src="https://ui-avatars.com/api/?name=Ranga+Karunanayake&background=0d9488&color=fff&size=64"
-          class="w-8 h-8 rounded-full" alt="Avatar" />
-        <div class="text-right">
-          <div class="text-xs font-semibold text-gray-800 leading-tight">Ranga</div>
-          <div class="text-xs text-gray-500 leading-tight">Karunanayake</div>
-        </div>
-      </div>
-    </div>
-  </header>
-
+  <!-- SIDEBAR -->
   <div id="sidebar-container"></div>
   <script src="sidebar-component.js"></script>
 
   <main class="ml-64 pt-16 min-h-screen">
     <div class="p-6">
-      <h1 class="text-xl font-bold text-gray-800 mb-1">Communications</h1>
-      <p class="text-sm text-gray-500 mb-5">Manage all claim-related communications and correspondence</p>
-      <h3 class="font-bold">Communication Type</h3>
-
-      <!-- TAB BUTTONS -->
-      <div class="flex gap-1.5 mb-5">
-        <button onclick="switchCommTab('sms')" id="tab-sms"
-          class="comm-tab px-4 py-2 rounded-md text-xs font-medium border border-gray-300 text-gray-600 bg-white hover:bg-gray-50">SMS</button>
-        <button onclick="switchCommTab('notes')" id="tab-notes"
-          class="comm-tab px-4 py-2 rounded-md text-xs font-medium border border-gray-300 text-gray-600 bg-white hover:bg-gray-50">Internal
-          Notes</button>
+      <h1 class="text-xl font-bold text-gray-800 mb-1">Communications & Messaging</h1>
+      <p class="text-sm text-gray-500 mb-5">Manage internal and customer communications</p>
+      
+      <div class="mb-5">
+        <h3 class="text-sm font-semibold text-gray-800 mb-2">Communication Type</h3>
+        <div class="flex gap-2">
+          <button id="tab-sms" class="px-6 py-2 text-xs font-semibold rounded-md bg-teal-600 text-white transition-colors" onclick="switchTab('sms')">SMS</button>
+          <button id="tab-notice" class="px-6 py-2 text-xs font-medium rounded-md bg-gray-50 border border-gray-200 text-gray-600 hover:bg-gray-100 transition-colors" onclick="switchTab('notice')">Notice</button>
+        </div>
       </div>
 
-
-
-      <!-- ============================================================ -->
-      <!-- TAB 2: SMS                                                     -->
-      <!-- ============================================================ -->
-      <div id="pane-sms" class="space-y-4">
-
+      <div id="content-sms">
         <!-- Filters -->
         <div class="bg-white rounded-lg border border-gray-200 p-4 mb-5">
-          <div class="grid grid-cols-3 gap-4 items-end">
+          <div class="grid grid-cols-2 gap-4 items-end max-w-4xl">
             <div>
               <label class="block text-xs font-medium text-gray-600 mb-1">Claim/Reference/Policy Number</label>
-              <input type="text" placeholder="Enter Claim Number"
-                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg class="h-3.5 w-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                </div>
+                <input type="text" placeholder="Enter Number" class="w-full pl-9 pr-3 py-2 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"/>
+              </div>
             </div>
-            <div>
-              <label class="block text-xs font-medium text-gray-600 mb-1">Contact Number (Claim-Intimated)</label>
-              <input type="text" placeholder="Enter Contact Number"
-                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
-            </div>
-            <div>
-              <button
-                class="w-[120px] bg-teal-600 text-white text-xs font-medium px-4 py-2 rounded-md hover:bg-teal-700 transition-colors ml-8">Search
-              </button>
+            <div class="flex gap-4">
+              <div class="flex-1">
+                <label class="block text-xs font-medium text-gray-600 mb-1">Contact Number (Claim-Intimated)</label>
+                <input type="text" placeholder="Enter Contact Number" class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"/>
+              </div>
+              <button class="bg-teal-600 text-white text-xs font-medium px-6 py-2 rounded-md hover:bg-teal-700 transition-colors h-[34px] mt-auto">Search</button>
             </div>
           </div>
         </div>
 
-        <!-- Two Row Table for Claim Number and Reference Number -->
-        <div class="bg-white rounded-lg border border-gray-200">
-
-          <div class="overflow-x-auto">
-            <table class="w-full text-xs">
-              <thead class="bg-gray-50 border-b border-gray-200">
-                <tr>
-                  <th class="px-3 py-3 text-center text-gray-600 font-medium">Claim Number</th>
-                  <th class="px-3 py-3 text-center text-gray-600 font-medium">Reference Number</th>
-
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-gray-100">
-                <tr class="hover:bg-gray-50">
-                  <td class="px-3 py-3 text-teal-700 font-medium text-center">CLM-2024-05238</td>
-                  <td class="px-3 py-3 font-medium text-gray-800 text-center">REF-2024-05238</td>
-
-                </tr>
-                <tr class="hover:bg-gray-50 bg-gray-50/50">
-                  <td class="px-3 py-3 text-teal-700 font-medium text-center">CLM-2024-05239</td>
-                  <td class="px-3 py-3 font-medium text-gray-800 text-center">REF-2024-05239</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        <!-- Claims Table -->
+        <div class="bg-white rounded-lg border border-gray-200 mb-5">
+          <table class="w-full text-xs text-center">
+            <thead class="bg-gray-50 border-b border-gray-200">
+              <tr>
+                <th class="px-4 py-3 font-medium text-gray-500 w-1/2">Claim Number</th>
+                <th class="px-4 py-3 font-medium text-gray-500 w-1/2">Ref Number</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr class="bg-teal-50">
+                <td class="px-4 py-3 text-gray-800">CLM-2024-0156</td>
+                <td class="px-4 py-3 text-gray-800">REF-2024-0156</td>
+              </tr>
+              <tr class="hover:bg-gray-50">
+                <td class="px-4 py-3 text-gray-800">CLM-2024-0156</td>
+                <td class="px-4 py-3 text-gray-800">REF-2024-0156</td>
+              </tr>
+              <tr class="hover:bg-gray-50">
+                <td class="px-4 py-3 text-gray-800">CLM-2024-0156</td>
+                <td class="px-4 py-3 text-gray-800">REF-2024-0156</td>
+              </tr>
+              <tr class="hover:bg-gray-50">
+                <td class="px-4 py-3 text-gray-800">CLM-2024-0156</td>
+                <td class="px-4 py-3 text-gray-800">REF-2024-0156</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
-        <div class="bg-white rounded-lg border border-gray-200 p-4 mt-5">
-          <div class="grid grid-cols-2 gap-4 items-end">
+        <div class="bg-white rounded-lg border border-gray-200 p-4 mb-5">
+          <div class="grid grid-cols-2 gap-4">
             <div>
               <label class="block text-xs font-medium text-gray-600 mb-1">Mobile Number</label>
-              <input type="text" placeholder="Auto Filled"
-                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+              <input type="text" placeholder="Auto-filled" readonly class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 bg-gray-50 text-gray-500"/>
             </div>
             <div>
               <label class="block text-xs font-medium text-gray-600 mb-1">Insured Name</label>
-              <input type="text" placeholder="Auto Filled"
-                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+              <input type="text" placeholder="Auto-filled" readonly class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 bg-gray-50 text-gray-500"/>
             </div>
           </div>
         </div>
 
-
-        <!-- Compose SMS -->
-
-        <div class="bg-white rounded-lg border border-gray-200 p-4">
-
-          <h2 class="text-sm font-semibold text-gray-800 mb-3">Send New SMS</h2>
-          <div class="grid grid-cols-3 gap-4 mb-3">
-
-            <div>
-              <label class="block text-xs font-medium text-gray-600 mb-1">Agent's Name </label>
-              <input type="text" placeholder="Enter Agent's Name"
-                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+        <!-- Send New SMS -->
+        <div class="bg-white rounded-lg border border-gray-200 p-5 mb-5">
+          <h2 class="text-base font-semibold text-gray-800 mb-4">Send New SMS</h2>
+          
+          <div class="mb-4">
+            <label class="flex items-center gap-2 text-xs text-gray-700 cursor-pointer mb-3">
+              <input type="checkbox" checked class="rounded border-gray-300 text-teal-600 focus:ring-teal-500" />
+              Send a copy of this SMS to the Agent
+            </label>
+            
+            <div class="grid grid-cols-3 gap-4">
+              <div>
+                <label class="block text-[11px] font-medium text-gray-600 mb-1">Agent's Name</label>
+                <input type="text" placeholder="Enter Agent's Name" class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"/>
+              </div>
+              <div>
+                <label class="block text-[11px] font-medium text-gray-600 mb-1">Agent's Phone Number</label>
+                <input type="text" placeholder="Enter Agent's Phone Number" class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"/>
+              </div>
+              <div>
+                <label class="block text-[11px] font-medium text-gray-600 mb-1">Agent's Email Address.</label>
+                <input type="text" placeholder="Enter Agent's Email Address." class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"/>
+              </div>
             </div>
-            <div>
-              <label class="block text-xs font-medium text-gray-600 mb-1">Agent's Phone Number</label>
-              <input type="tel" placeholder="07X XXX XXXX"
-                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
-            </div>
-            <div>
-              <label class="block text-xs font-medium text-gray-600 mb-1">Agent's Email Address</label>
-              <input type="email" placeholder="Enter Agent's Email"
-                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
-            </div>
-            <div class="flex items-center">
-              <label class="block text-xs font-medium text-gray-600 mb-1">Contact Number Source </label>
-              <input type="radio" name="contact-source" value="claim-intimated" class="mr-1" /> Claim Intimated
-            </div>
-
-
-
           </div>
-          <div class="mb-3">
-            <label class="block text-xs font-medium text-gray-600 mb-1">Message Content <span
-                class="text-gray-400 font-normal" id="sms-count">(0/160 characters)</span></label>
-            <textarea id="sms-text" rows="3" placeholder="Type SMS message here..." oninput="updateSmsCount()"
-              class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none"></textarea>
+
+          <div class="mb-4">
+            <label class="block text-[11px] font-medium text-gray-600 mb-2">Contact Number Source</label>
+            <div class="flex gap-6">
+              <label class="flex items-center gap-2 text-xs font-medium text-gray-800 cursor-pointer">
+                <input type="radio" name="contact-source" checked class="text-teal-600 focus:ring-teal-500" />
+                System Contact Number
+              </label>
+              <label class="flex items-center gap-2 text-xs font-medium text-gray-800 cursor-pointer">
+                <input type="radio" name="contact-source" class="text-teal-600 focus:ring-teal-500" />
+                Enter New Number
+              </label>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-[11px] font-medium text-gray-600 mb-1">Phone Number</label>
+            <input type="text" placeholder="Enter Number" class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"/>
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-[11px] font-medium text-gray-600 mb-1">Message Content</label>
+            <select class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-500">
+              <option>Select Message Content</option>
+            </select>
+          </div>
+
+          <div class="mb-4 relative">
+            <div class="flex justify-between items-center mb-1">
+              <label class="block text-[11px] font-medium text-gray-600">Message Content</label>
+              <span class="text-[10px] text-gray-500 bg-gray-100 px-2 py-0.5 rounded">0 / 160 chars</span>
+            </div>
+            <textarea placeholder="Type your SMS message here..." rows="4" class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"></textarea>
+          </div>
+
+          <div class="flex justify-end">
+            <button class="bg-teal-600 hover:bg-teal-700 text-white text-xs font-medium px-4 py-2 rounded-md flex items-center gap-2 transition-colors">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+              Send Message
+            </button>
+          </div>
+        </div>
+
+        <!-- SMS History Log Table -->
+        <div class="bg-white rounded-lg border border-gray-200">
+          <div class="px-4 py-3 border-b border-gray-200">
+            <h2 class="text-sm font-semibold text-gray-800">SMS History Log</h2>
           </div>
           
-          <div class="mb-3">
-            <label class="block text-xs font-medium text-gray-600 mb-1">Message <span class="text-gray-400 font-normal"
-                id="sms-count">(0/160 characters)</span></label>
-            <textarea id="sms-text" rows="3" placeholder="Type SMS message here..." oninput="updateSmsCount()"
-              class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none"></textarea>
-          </div>
-          <div class="flex items-center justify-between">
-            <p class="text-xs text-gray-400">Standard SMS: 160 characters per message</p>
-            <button
-              class="bg-teal-600 text-white text-xs font-medium px-5 py-2 rounded-md flex items-center gap-1.5 hover:bg-teal-700 transition-colors">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-              </svg>
-              Send SMS
-            </button>
-          </div>
-        </div>
-
-        <!-- SMS History Table -->
-        <div class="bg-white rounded-lg border border-gray-200">
-          <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200">
-            <h2 class="text-sm font-semibold text-gray-800">SMS History</h2>
-            <button
-              class="flex items-center gap-1.5 text-xs text-gray-600 border border-gray-300 rounded-md px-3 py-1.5 hover:bg-gray-50">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </svg>Export
-            </button>
-          </div>
           <div class="overflow-x-auto">
-            <table class="w-full text-xs">
-              <thead class="bg-gray-50 border-b border-gray-200">
+            <table class="w-full text-xs text-center">
+              <thead class="bg-gray-50 border-b border-gray-100">
                 <tr>
-                  <th class="px-4 py-3 text-left text-gray-600 font-medium">Date & Time</th>
-                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Claim Number</th>
-                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Mobile Number</th>
-                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Message Preview</th>
-                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Sent By</th>
-                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Status</th>
+                  <th class="px-4 py-3 font-medium text-gray-500">Intimation<br/>No</th>
+                  <th class="px-4 py-3 font-medium text-gray-500">Contact Number</th>
+                  <th class="px-4 py-3 font-medium text-gray-500">Sent By</th>
+                  <th class="px-4 py-3 font-medium text-gray-500">EPF</th>
+                  <th class="px-4 py-3 font-medium text-gray-500">Date & Time</th>
+                  <th class="px-4 py-3 font-medium text-gray-500">Branch</th>
+                  <th class="px-4 py-3 font-medium text-gray-500 text-left">Message Preview</th>
+                  <th class="px-4 py-3 font-medium text-gray-500">Agent Name</th>
+                  <th class="px-4 py-3 font-medium text-gray-500">Agent Number</th>
+                  <th class="px-4 py-3 font-medium text-gray-500">Action</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-100">
                 <tr class="hover:bg-gray-50">
-                  <td class="px-4 py-3 text-gray-600">Jan 15, 2024 11:00 AM</td>
-                  <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05238</td>
-                  <td class="px-3 py-3 text-gray-600">077 123 1234</td>
-                  <td class="px-3 py-3 text-gray-700">Your claim CLM-2024-05238 has been received...</td>
-                  <td class="px-3 py-3 text-gray-600">System</td>
-                  <td class="px-3 py-3"><span
-                      class="bg-green-100 text-green-700 px-2 py-0.5 rounded font-medium">Delivered</span></td>
-                </tr>
-                <tr class="hover:bg-gray-50 bg-gray-50/50">
-                  <td class="px-4 py-3 text-gray-600">Jan 15, 2024 03:30 PM</td>
-                  <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05239</td>
-                  <td class="px-3 py-3 text-gray-600">077 456 7890</td>
-                  <td class="px-3 py-3 text-gray-700">Action required: Please submit documents...</td>
-                  <td class="px-3 py-3 text-gray-600">Ranga K.</td>
-                  <td class="px-3 py-3"><span
-                      class="bg-red-100 text-red-700 px-2 py-0.5 rounded font-medium">Failed</span></td>
+                  <td class="px-4 py-3 text-gray-800">INT12345</td>
+                  <td class="px-4 py-3 text-gray-600">077 123 4567</td>
+                  <td class="px-4 py-3 text-gray-800">Chamal Achintha</td>
+                  <td class="px-4 py-3 text-gray-500">EPF: 8493</td>
+                  <td class="px-4 py-3 text-gray-800">Jan 15, 2024<br/><span class="text-gray-500">02:30 PM</span></td>
+                  <td class="px-4 py-3 text-blue-500">Main Branch</td>
+                  <td class="px-4 py-3 text-gray-600 text-left truncate max-w-[200px]">Urgent: Review claim CLM-2024-0345...</td>
+                  <td class="px-4 py-3 text-gray-800">Chamal Achintha</td>
+                  <td class="px-4 py-3 text-gray-600">077 123 4567</td>
+                  <td class="px-4 py-3">
+                    <button class="bg-teal-600 text-white text-xs font-medium px-4 py-2 rounded-md hover:bg-teal-700 transition-colors">View</button>
+                  </td>
                 </tr>
                 <tr class="hover:bg-gray-50">
-                  <td class="px-4 py-3 text-gray-600">Jan 16, 2024 09:15 AM</td>
-                  <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05240</td>
-                  <td class="px-3 py-3 text-gray-600">071 234 5678</td>
-                  <td class="px-3 py-3 text-gray-700">Your claim CLM-2024-05240 status updated...</td>
-                  <td class="px-3 py-3 text-gray-600">System</td>
-                  <td class="px-3 py-3"><span
-                      class="bg-green-100 text-green-700 px-2 py-0.5 rounded font-medium">Delivered</span></td>
+                  <td class="px-4 py-3 text-gray-800">INT12346</td>
+                  <td class="px-4 py-3 text-gray-600">077 123 7854</td>
+                  <td class="px-4 py-3 text-gray-800">Ravindu Dhanayaka</td>
+                  <td class="px-4 py-3 text-gray-500">EPF: 8445</td>
+                  <td class="px-4 py-3 text-gray-800">Jan 15, 2024<br/><span class="text-gray-500">02:30 PM</span></td>
+                  <td class="px-4 py-3 text-blue-500">Kalutara</td>
+                  <td class="px-4 py-3 text-gray-600 text-left truncate max-w-[200px]">Urgent: Review claim CLM-2024-0345...</td>
+                  <td class="px-4 py-3 text-gray-800">Ravindu Dhanayaka</td>
+                  <td class="px-4 py-3 text-gray-600">077 123 7854</td>
+                  <td class="px-4 py-3">
+                    <button class="bg-teal-600 text-white text-xs font-medium px-4 py-2 rounded-md hover:bg-teal-700 transition-colors">View</button>
+                  </td>
+                </tr>
+                <tr class="hover:bg-gray-50">
+                  <td class="px-4 py-3 text-gray-800">INT12347</td>
+                  <td class="px-4 py-3 text-gray-600">077 568 8538</td>
+                  <td class="px-4 py-3 text-gray-800">Udhantha Samdaru</td>
+                  <td class="px-4 py-3 text-gray-500">EPF: 8469</td>
+                  <td class="px-4 py-3 text-gray-800">Jan 15, 2024<br/><span class="text-gray-500">02:30 PM</span></td>
+                  <td class="px-4 py-3 text-blue-500">Mathugama</td>
+                  <td class="px-4 py-3 text-gray-600 text-left truncate max-w-[200px]">Urgent: Review claim CLM-2024-0345...</td>
+                  <td class="px-4 py-3 text-gray-800">Udhantha Samdaru</td>
+                  <td class="px-4 py-3 text-gray-600">077 568 8538</td>
+                  <td class="px-4 py-3">
+                    <button class="bg-teal-600 text-white text-xs font-medium px-4 py-2 rounded-md hover:bg-teal-700 transition-colors">View</button>
+                  </td>
+                </tr>
+                <tr class="hover:bg-gray-50">
+                  <td class="px-4 py-3 text-gray-800">INT12348</td>
+                  <td class="px-4 py-3 text-gray-600">077 785 4789</td>
+                  <td class="px-4 py-3 text-gray-800">Mekhala Sewwandi</td>
+                  <td class="px-4 py-3 text-gray-500">EPF: 8756</td>
+                  <td class="px-4 py-3 text-gray-800">Jan 15, 2024<br/><span class="text-gray-500">02:30 PM</span></td>
+                  <td class="px-4 py-3 text-blue-500">Gampaha</td>
+                  <td class="px-4 py-3 text-gray-600 text-left truncate max-w-[200px]">Urgent: Review claim CLM-2024-0345...</td>
+                  <td class="px-4 py-3 text-gray-800">Mekhala Sewwandi</td>
+                  <td class="px-4 py-3 text-gray-600">077 785 4789</td>
+                  <td class="px-4 py-3">
+                    <button class="bg-teal-600 text-white text-xs font-medium px-4 py-2 rounded-md hover:bg-teal-700 transition-colors">View</button>
+                  </td>
                 </tr>
               </tbody>
             </table>
           </div>
-        </div>
-      </div>
-
-
-
-      <!-- ============================================================ -->
-      <!-- TAB 4: INTERNAL NOTES                                          -->
-      <!-- ============================================================ -->
-      <div id="pane-notes" class="hidden space-y-4">
-        <!-- Add Note -->
-        <div class="bg-white rounded-lg border border-gray-200 p-4">
-          <h2 class="text-sm font-semibold text-gray-800 mb-3">Add Internal Note</h2>
-          <div class="grid grid-cols-3 gap-4 mb-3">
-            <div>
-              <label class="block text-xs font-medium text-gray-600 mb-1">Claim Number</label>
-              <input type="text" placeholder="Enter Claim Number"
-                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
-            </div>
-            <div>
-              <label class="block text-xs font-medium text-gray-600 mb-1">Note Category</label>
-              <select
-                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-600">
-                <option>General</option>
-                <option>Action Required</option>
-                <option>Escalation</option>
-                <option>Legal</option>
-                <option>Financial</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-xs font-medium text-gray-600 mb-1">Priority</label>
-              <select
-                class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-600">
-                <option>Normal</option>
-                <option>High</option>
-                <option>Urgent</option>
-              </select>
-            </div>
-          </div>
-          <div class="mb-3">
-            <label class="block text-xs font-medium text-gray-600 mb-1">Note</label>
-            <textarea rows="4" placeholder="Enter internal note for this claim (visible to all handlers)..."
-              class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none"></textarea>
-          </div>
-          <div class="flex items-center justify-between">
-            <label class="flex items-center gap-2 text-xs text-gray-600 cursor-pointer">
-              <input type="checkbox" class="rounded border-gray-300" />
-              Flag this note for follow-up
-            </label>
-            <button
-              class="bg-teal-600 text-white text-xs font-medium px-4 py-2 rounded-md flex items-center gap-1.5 hover:bg-teal-700 transition-colors">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-              </svg>
-              Add Note
-            </button>
-          </div>
-        </div>
-
-        <!-- Notes List -->
-        <div class="bg-white rounded-lg border border-gray-200">
-          <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200">
-            <h2 class="text-sm font-semibold text-gray-800">Internal Notes Log</h2>
-            <div class="flex items-center gap-2">
-              <div class="relative">
-                <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" fill="none"
-                  stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <circle cx="11" cy="11" r="8" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35" />
-                </svg>
-                <input type="text" placeholder="Search notes..."
-                  class="text-xs border border-gray-300 rounded-md pl-8 pr-3 py-1.5 w-40 focus:outline-none focus:ring-2 focus:ring-teal-500" />
-              </div>
-              <select
-                class="text-xs border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-500">
-                <option>All Categories</option>
-                <option>General</option>
-                <option>Action Required</option>
-                <option>Escalation</option>
-              </select>
-            </div>
-          </div>
-          <div class="divide-y divide-gray-100">
-            <!-- Note 1 -->
-            <div class="p-4 hover:bg-gray-50 transition-colors">
-              <div class="flex items-start justify-between mb-1">
-                <div class="flex items-center gap-2">
-                  <span class="text-xs font-semibold text-gray-800">CLM-2024-05238</span>
-                  <span class="bg-red-100 text-red-700 text-xs px-2 py-0.5 rounded font-medium">Action Required</span>
-                  <span
-                    class="bg-red-50 text-red-600 text-xs px-2 py-0.5 rounded border border-red-200 font-medium">High</span>
-                </div>
-                <div class="flex items-center gap-3">
-                  <span class="text-xs text-gray-400">Jan 15, 2024 — 10:45 AM</span>
-                  <button class="text-xs text-gray-400 hover:text-teal-600">Edit</button>
-                  <button class="text-xs text-gray-400 hover:text-red-600">Delete</button>
-                </div>
-              </div>
-              <p class="text-xs text-gray-700 mb-1">Surveyor report submitted. Pending management approval for
-                settlement above LKR 5M threshold. Escalate if not approved within 2 business days.</p>
-              <div class="flex items-center gap-2">
-                <img src="https://ui-avatars.com/api/?name=Ranga+K&background=0d9488&color=fff&size=32"
-                  class="w-5 h-5 rounded-full" alt="" />
-                <span class="text-xs text-gray-500">Ranga Karunanayake</span>
-                <span class="text-xs text-teal-600">🔖 Flagged for follow-up</span>
-              </div>
-            </div>
-            <!-- Note 2 -->
-            <div class="p-4 hover:bg-gray-50 transition-colors">
-              <div class="flex items-start justify-between mb-1">
-                <div class="flex items-center gap-2">
-                  <span class="text-xs font-semibold text-gray-800">CLM-2024-05239</span>
-                  <span class="bg-gray-100 text-gray-700 text-xs px-2 py-0.5 rounded font-medium">General</span>
-                  <span
-                    class="bg-green-50 text-green-600 text-xs px-2 py-0.5 rounded border border-green-200 font-medium">Normal</span>
-                </div>
-                <div class="flex items-center gap-3">
-                  <span class="text-xs text-gray-400">Jan 15, 2024 — 02:00 PM</span>
-                  <button class="text-xs text-gray-400 hover:text-teal-600">Edit</button>
-                  <button class="text-xs text-gray-400 hover:text-red-600">Delete</button>
-                </div>
-              </div>
-              <p class="text-xs text-gray-700 mb-1">Called insured to confirm receipt of intimation. They have
-                additional photos from the incident which they will email by EOD.</p>
-              <div class="flex items-center gap-2">
-                <img src="https://ui-avatars.com/api/?name=Ranga+K&background=0d9488&color=fff&size=32"
-                  class="w-5 h-5 rounded-full" alt="" />
-                <span class="text-xs text-gray-500">Ranga Karunanayake</span>
-              </div>
-            </div>
-            <!-- Note 3 -->
-            <div class="p-4 hover:bg-gray-50 transition-colors">
-              <div class="flex items-start justify-between mb-1">
-                <div class="flex items-center gap-2">
-                  <span class="text-xs font-semibold text-gray-800">CLM-2024-05240</span>
-                  <span class="bg-purple-100 text-purple-700 text-xs px-2 py-0.5 rounded font-medium">Legal</span>
-                  <span
-                    class="bg-red-50 text-red-600 text-xs px-2 py-0.5 rounded border border-red-200 font-medium">Urgent</span>
-                </div>
-                <div class="flex items-center gap-3">
-                  <span class="text-xs text-gray-400">Jan 16, 2024 — 09:30 AM</span>
-                  <button class="text-xs text-gray-400 hover:text-teal-600">Edit</button>
-                  <button class="text-xs text-gray-400 hover:text-red-600">Delete</button>
-                </div>
-              </div>
-              <p class="text-xs text-gray-700 mb-1">Insured has engaged a lawyer. All future communications must go
-                through the legal team. Do not contact the insured directly. Legal team contact: Colombo Law Associates
-                — 0112XXXXXX.</p>
-              <div class="flex items-center gap-2">
-                <img src="https://ui-avatars.com/api/?name=Ranga+K&background=0d9488&color=fff&size=32"
-                  class="w-5 h-5 rounded-full" alt="" />
-                <span class="text-xs text-gray-500">Ranga Karunanayake</span>
-                <span class="text-xs text-teal-600">🔖 Flagged for follow-up</span>
-              </div>
-            </div>
+          <div class="px-4 py-3 border-t border-gray-100 flex items-center justify-start text-xs text-gray-500">
+            <div>Showing 1 to 4 of 24 results</div>
           </div>
         </div>
       </div>
 
+      <div id="content-notice" class="hidden">
+        <!-- Placeholder for Notice Tab -->
+      </div>
     </div>
   </main>
 
   <script>
     renderSidebar('communications');
-
-    const COMM_TABS = ['sms', 'notes'];
-
-    function switchCommTab(tabId) {
-      COMM_TABS.forEach(t => {
-        document.getElementById('pane-' + t).classList.add('hidden');
-        const btn = document.getElementById('tab-' + t);
-        btn.classList.remove('bg-teal-600', 'text-white', 'shadow-sm');
-        btn.classList.add('bg-white', 'text-gray-600', 'border', 'border-gray-300');
-      });
-      document.getElementById('pane-' + tabId).classList.remove('hidden');
-      const activeBtn = document.getElementById('tab-' + tabId);
-      activeBtn.classList.add('bg-teal-600', 'text-white', 'shadow-sm');
-      activeBtn.classList.remove('bg-white', 'text-gray-600', 'border', 'border-gray-300');
+    
+    function switchTab(tab) {
+      const tabSms = document.getElementById('tab-sms');
+      const tabNotice = document.getElementById('tab-notice');
+      const contentSms = document.getElementById('content-sms');
+      const contentNotice = document.getElementById('content-notice');
+      
+      if (tab === 'sms') {
+        tabSms.className = 'px-6 py-2 text-xs font-semibold rounded-md bg-teal-600 text-white transition-colors';
+        tabNotice.className = 'px-6 py-2 text-xs font-medium rounded-md bg-gray-50 border border-gray-200 text-gray-600 hover:bg-gray-100 transition-colors';
+        contentSms.classList.remove('hidden');
+        contentNotice.classList.add('hidden');
+      } else {
+        tabNotice.className = 'px-6 py-2 text-xs font-semibold rounded-md bg-teal-600 text-white transition-colors';
+        tabSms.className = 'px-6 py-2 text-xs font-medium rounded-md bg-gray-50 border border-gray-200 text-gray-600 hover:bg-gray-100 transition-colors';
+        contentNotice.classList.remove('hidden');
+        contentSms.classList.add('hidden');
+      }
     }
-
-    function updateSmsCount() {
-      const txt = document.getElementById('sms-text').value;
-      document.getElementById('sms-count').textContent = '(' + txt.length + '/160 characters)';
-    }
-
-    function fillSmsTemplate(sel) {
-      if (sel.value) document.getElementById('sms-text').value = sel.value;
-      updateSmsCount();
-    }
-
-    // Start on Email tab
-    switchCommTab('sms');
   </script>
 </body>
-
 </html>

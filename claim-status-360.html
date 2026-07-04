@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Claim Status 360 View — Insurance Claims Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: { 600: '#00ADBB', 700: '#008A9A', 50: '#f0fdfa' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .tab-active { background-color: #00ADBB; color: white; border-color: #00ADBB; }
+    .tab-inactive { background-color: white; color: #4B5563; border-color: #E5E7EB; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen pb-20">
+  <!-- NAVBAR -->
+  <div id="navbar-container"></div>
+  <script src="navbar-component.js"></script>
+
+  <!-- SIDEBAR -->
+  <div id="sidebar-container"></div>
+  <script src="sidebar-component.js"></script>
+
+  <main class="ml-64 pt-16 min-h-screen">
+    <div class="p-6">
+      <h1 class="text-xl font-bold text-gray-800 mb-6">Claim Status 360 View</h1>
+
+      <!-- Search Claim -->
+      <div class="bg-white rounded-lg border border-gray-200 p-5 mb-6 shadow-sm">
+        <h2 class="text-sm font-semibold text-gray-800 mb-4">Search Claim</h2>
+        <div class="flex gap-4 items-end">
+          <div class="flex-1">
+            <label class="block text-xs font-medium text-gray-600 mb-1">Claim/Reference/Policy Number</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg class="h-3.5 w-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+              </div>
+              <input type="text" placeholder="Enter Number" class="w-full pl-9 pr-3 py-2 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"/>
+            </div>
+          </div>
+          <div class="flex-1">
+            <label class="block text-xs font-medium text-gray-600 mb-1">Contact Number (Claim-Intimated)</label>
+            <input type="text" placeholder="Enter Contact Number" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"/>
+          </div>
+          <button class="bg-teal-600 text-white text-xs font-medium px-8 py-2 rounded-md hover:bg-teal-700 transition-colors h-[34px]">Search</button>
+        </div>
+      </div>
+
+      <!-- Claim Header Info Cards -->
+       <div class="grid grid-cols-4 gap-2 mb-6">
+        <div class="bg-white rounded-lg border border-gray-200 p-4 min-w-[180px] flex-1 shadow-sm">
+          <div class="text-xs text-gray-500 mb-1">Claim Number</div>
+          <div class="font-bold text-gray-800">CLM-2024-001456</div>
+        </div>
+        <div class="bg-white rounded-lg border border-gray-200 p-4 min-w-[180px] flex-1 shadow-sm">
+          <div class="text-xs text-gray-500 mb-1">Ref Number</div>
+          <div class="font-bold text-gray-800">REF-2024-001456</div>
+        </div>
+        <div class="bg-white rounded-lg border border-gray-200 p-4 min-w-[180px] flex-1 shadow-sm">
+          <div class="text-xs text-gray-500 mb-1">Customer Name</div>
+          <div class="font-bold text-gray-800 leading-tight">Ganeshi Kavindya</div>
+        </div>
+        <div class="bg-white rounded-lg border border-gray-200 p-4 min-w-[180px] flex-1 shadow-sm">
+          <div class="text-xs text-gray-500 mb-1">Date of Loss</div>
+          <div class="font-bold text-gray-800 leading-tight">March 15, 2024</div>
+        </div>
+        <div class="bg-white rounded-lg border border-gray-200 p-4 min-w-[180px] flex-1 shadow-sm">
+          <div class="text-xs text-gray-500 mb-1">Event</div>
+          <div class="font-bold text-gray-800">Riots</div>
+        </div>
+        <div class="bg-white rounded-lg border border-gray-200 p-4 min-w-[180px] flex-1 shadow-sm">
+          <div class="text-xs text-gray-500 mb-1">Estimated Liability</div>
+          <div class="font-bold text-gray-800">LKR 500,000</div>
+        </div>
+        <div class="bg-white rounded-lg border border-gray-200 p-4 min-w-[180px] flex-1 shadow-sm relative overflow-hidden">
+          <div class="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent"></div>
+          <div class="text-xs text-gray-500 mb-1 whitespace-nowrap">Claim Reserve Amount</div>
+          <div class="font-bold text-gray-800 whitespace-nowrap">LKR 500,000</div>
+        </div>
+      </div>
+
+      <!-- Tabs Navigation -->
+      <div class="flex flex-wrap gap-2 mb-6" id="tabs-container">
+        <button onclick="switchTab('tab-document-details')" class="px-4 py-2 text-xs font-medium rounded border tab-btn tab-active hover:bg-teal-600 hover:text-white" data-target="tab-document-details">Document Details</button>
+        <button onclick="switchTab('tab-payment-status')" class="px-4 py-2 text-xs font-medium rounded border tab-btn tab-inactive hover:bg-teal-600 hover:text-white transition-colors" data-target="tab-payment-status">Payment Status</button>
+        <button onclick="switchTab('tab-file-movement')" class="px-4 py-2 text-xs font-medium rounded border tab-btn tab-inactive hover:bg-gray-50 transition-colors hover:bg-teal-600 hover:text-white" data-target="tab-file-movement">File Movement</button>
+        <button onclick="switchTab('tab-notes-memos')" class="px-4 py-2 text-xs font-medium rounded border tab-btn tab-inactive hover:bg-gray-50 transition-colors hover:bg-teal-600 hover:text-white" data-target="tab-notes-memos">Notes & Memos</button>
+        <button onclick="switchTab('tab-technical-reports')" class="px-4 py-2 text-xs font-medium rounded border tab-btn tab-inactive hover:bg-gray-50 transition-colors hover:bg-teal-600 hover:text-white" data-target="tab-technical-reports">Technical Reports</button>
+        <button onclick="switchTab('tab-task-movement')" class="px-4 py-2 text-xs font-medium rounded border tab-btn tab-inactive hover:bg-gray-50 transition-colors hover:bg-teal-600 hover:text-white" data-target="tab-task-movement">Task Movement</button>
+      </div>
+
+      <!-- Tab Contents -->
+
+      <!-- Tab 1: Document Details -->
+      <div id="tab-document-details" class="tab-content active">
+        <!-- Accepted Documents -->
+        <div class="bg-white rounded-lg border border-gray-200 mb-6 shadow-sm">
+          <div class="px-5 py-4 border-b border-gray-100">
+            <h2 class="text-sm font-semibold text-gray-800">Accepted Documents</h2>
+          </div>
+          <table class="w-full text-xs text-center">
+            <thead class="bg-gray-50 border-b border-gray-100">
+              <tr>
+                <th class="py-3 px-5 font-medium text-gray-500 w-1/4">Document Name</th>
+                <th class="py-3 px-5 font-medium text-gray-500 w-1/4">Date/Time Accepted</th>
+                <th class="py-3 px-5 font-medium text-gray-500 w-1/4">Branch</th>
+                <th class="py-3 px-5 font-medium text-gray-500 w-1/4">EPF</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="py-4 px-5 text-gray-800 font-medium">Fire Insurance Policy</td>
+                <td class="py-4 px-5 text-gray-500">2024-03-16 09:30 AM</td>
+                <td class="py-4 px-5 text-gray-500">Colombo Main</td>
+                <td class="py-4 px-5 text-gray-500">EPF001234</td>
+              </tr>
+              <tr>
+                <td class="py-4 px-5 text-gray-800 font-medium">Fire Department Report</td>
+                <td class="py-4 px-5 text-gray-500">2024-03-17 02:15 PM</td>
+                <td class="py-4 px-5 text-gray-500">Colombo Main</td>
+                <td class="py-4 px-5 text-gray-500">EPF001235</td>
+              </tr>
+              <tr>
+                <td class="py-4 px-5 text-gray-800 font-medium">Property Damage Assessment</td>
+                <td class="py-4 px-5 text-gray-500">2024-03-18 11:45 AM</td>
+                <td class="py-4 px-5 text-gray-500">Kandy Branch</td>
+                <td class="py-4 px-5 text-gray-500">EPF001236</td>
+              </tr>
+              <tr>
+                <td class="py-4 px-5 text-gray-800 font-medium">Witness Statements</td>
+                <td class="py-4 px-5 text-gray-500">2024-03-19 04:20 PM</td>
+                <td class="py-4 px-5 text-gray-500">Colombo Main</td>
+                <td class="py-4 px-5 text-gray-500">EPF001237</td>
+              </tr>
+              <tr>
+                <td class="py-4 px-5 text-gray-800 font-medium">Inventory Loss Report</td>
+                <td class="py-4 px-5 text-gray-500">2024-03-20 10:00 AM</td>
+                <td class="py-4 px-5 text-gray-500">Galle Branch</td>
+                <td class="py-4 px-5 text-gray-500">EPF001238</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Document Movement -->
+        <div class="bg-white rounded-lg border border-gray-200 mb-6 shadow-sm">
+          <div class="px-5 py-4 border-b border-gray-100">
+            <h2 class="text-sm font-semibold text-gray-800">Document Movement</h2>
+          </div>
+          <table class="w-full text-xs text-center">
+            <thead class="bg-gray-50 border-b border-gray-100">
+              <tr>
+                <th class="py-3 px-5 font-medium text-gray-500">Document Name</th>
+                <th class="py-3 px-5 font-medium text-gray-500">Date/Time Accepted</th>
+                <th class="py-3 px-5 font-medium text-gray-500">Assigned Branch</th>
+                <th class="py-3 px-5 font-medium text-gray-500">Assigned EPF</th>
+                <th class="py-3 px-5 font-medium text-gray-500">Date/Time HO Accepted</th>
+                <th class="py-3 px-5 font-medium text-gray-500">HO EPF</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="py-4 px-5 text-gray-800 font-medium">Fire Insurance Policy</td>
+                <td class="py-4 px-5 text-gray-500">2024-03-16 09:30 AM</td>
+                <td class="py-4 px-5 text-gray-500">Colombo Main</td>
+                <td class="py-4 px-5 text-gray-500">EPF001234</td>
+                <td class="py-4 px-5 text-gray-500">2024-03-16 01:45 PM</td>
+                <td class="py-4 px-5 text-gray-500">HOEPF5001</td>
+              </tr>
+              <tr>
+                <td class="py-4 px-5 text-gray-800 font-medium">Fire Department Report</td>
+                <td class="py-4 px-5 text-gray-500">2024-03-17 02:15 PM</td>
+                <td class="py-4 px-5 text-gray-500">Colombo Main</td>
+                <td class="py-4 px-5 text-gray-500">EPF001235</td>
+                <td class="py-4 px-5 text-gray-500">2024-03-17 05:30 PM</td>
+                <td class="py-4 px-5 text-gray-500">HOEPF5002</td>
+              </tr>
+              <tr>
+                <td class="py-4 px-5 text-gray-800 font-medium">Property Damage Assessment</td>
+                <td class="py-4 px-5 text-gray-500">2024-03-18 11:45 AM</td>
+                <td class="py-4 px-5 text-gray-500">Kandy Branch</td>
+                <td class="py-4 px-5 text-gray-500">EPF001236</td>
+                <td class="py-4 px-5 text-gray-500">2024-03-18 03:20 PM</td>
+                <td class="py-4 px-5 text-gray-500">HOEPF5003</td>
+              </tr>
+              <tr>
+                <td class="py-4 px-5 text-gray-800 font-medium">Witness Statements</td>
+                <td class="py-4 px-5 text-gray-500">2024-03-19 04:20 PM</td>
+                <td class="py-4 px-5 text-gray-500">Colombo Main</td>
+                <td class="py-4 px-5 text-gray-500">EPF001237</td>
+                <td class="py-4 px-5 text-gray-500">2024-03-20 09:15 AM</td>
+                <td class="py-4 px-5 text-gray-500">HOEPF5004</td>
+              </tr>
+              <tr>
+                <td class="py-4 px-5 text-gray-800 font-medium">Inventory Loss Report</td>
+                <td class="py-4 px-5 text-gray-500">2024-03-20 10:00 AM</td>
+                <td class="py-4 px-5 text-gray-500">Galle Branch</td>
+                <td class="py-4 px-5 text-gray-500">EPF001238</td>
+                <td class="py-4 px-5 text-gray-500">Pending</td>
+                <td class="py-4 px-5 text-gray-500">-</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab 2: File Movement -->
+      <div id="tab-file-movement" class="tab-content">
+        <div class="bg-white rounded-lg border border-gray-200 mb-6 shadow-sm">
+          <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+            <h2 class="text-sm font-semibold text-gray-800">File Movement Tracking</h2>
+            <div class="flex items-center gap-3">
+              <button class="flex items-center gap-1.5 text-xs text-gray-600 border border-gray-300 rounded-md px-3 py-1.5 hover:bg-gray-50">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                Export to Excel
+              </button>
+              <span class="bg-red-50 text-red-600 text-xs font-medium px-3 py-1.5 rounded-md border border-red-200">14 records found</span>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs text-center">
+              <thead class="bg-gray-50 border-b border-gray-100">
+                <tr>
+                  <th class="py-3 px-4 font-medium text-gray-500">Claim Number</th>
+                  <th class="py-3 px-4 font-medium text-gray-500">Assigned Date</th>
+                  <th class="py-3 px-4 font-medium text-gray-500">Handling Officer</th>
+                  <th class="py-3 px-4 font-medium text-gray-500">Total Turnaround Time</th>
+                  <th class="py-3 px-4 font-medium text-gray-500">Assigned by</th>
+                  <th class="py-3 px-4 font-medium text-gray-500">Assignee Name</th>
+                  <th class="py-3 px-4 font-medium text-gray-500">Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <tr>
+                  <td class="py-4 px-4 text-gray-600">CLM-2024-0156</td>
+                  <td class="py-4 px-4 text-gray-800 font-medium">Jan 15, 2024</td>
+                  <td class="py-4 px-4 text-gray-600">Kusal Mendis</td>
+                  <td class="py-4 px-4">
+                    <span class="inline-flex items-center gap-1 bg-yellow-100 text-yellow-700 px-2 py-1 rounded font-medium">
+                      <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                      5 Days (Running)
+                    </span>
+                  </td>
+                  <td class="py-4 px-4 text-gray-800">Ravindu Dahanayake<br/><span class="text-gray-500">(Risk Engineers)</span></td>
+                  <td class="py-4 px-4 text-gray-600">Chamal Achintha</td>
+                  <td class="py-4 px-4">
+                    <span class="inline-flex items-center gap-1 bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full font-medium">
+                      <svg class="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                      In Progress
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="py-4 px-4 text-gray-600">CLM-2024-0156</td>
+                  <td class="py-4 px-4 text-gray-800 font-medium">Jan 12, 2024</td>
+                  <td class="py-4 px-4 text-gray-600">Kusal Mendis</td>
+                  <td class="py-4 px-4 text-green-600 font-medium">3 Days</td>
+                  <td class="py-4 px-4 text-gray-800">Chamodi Kawshalya<br/><span class="text-gray-500">(Reinsurance)</span></td>
+                  <td class="py-4 px-4 text-gray-600">Ravindu Dahanayake</td>
+                  <td class="py-4 px-4">
+                    <span class="inline-flex items-center gap-1 bg-green-100 text-green-700 px-3 py-1 rounded-full font-medium">
+                      <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                      Completed
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="py-4 px-4 text-gray-600">CLM-2024-0156</td>
+                  <td class="py-4 px-4 text-gray-800 font-medium">Jan 8, 2024</td>
+                  <td class="py-4 px-4 text-gray-600">Kusal Mendis</td>
+                  <td class="py-4 px-4 text-green-600 font-medium">4 Days</td>
+                  <td class="py-4 px-4 text-gray-800">Mekhala Sewwandi<br/><span class="text-gray-500">(Outside Loss Adjusters)</span></td>
+                  <td class="py-4 px-4 text-gray-600">Chamodi Kawshalya</td>
+                  <td class="py-4 px-4">
+                    <span class="inline-flex items-center gap-1 bg-green-100 text-green-700 px-3 py-1 rounded-full font-medium">
+                      <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                      Completed
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="px-4 py-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+            <div>Showing 1 to 5 of 24 results</div>
+            <div class="flex gap-1">
+              <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">&lt;</button>
+              <button class="w-7 h-7 bg-teal-600 text-white rounded flex items-center justify-center">1</button>
+              <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">2</button>
+              <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">3</button>
+              <span class="px-1 flex items-center">...</span>
+              <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">5</button>
+              <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">&gt;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 3: Notes & Memos -->
+      <div id="tab-notes-memos" class="tab-content">
+        <h2 class="text-sm font-bold text-gray-800 mb-4 ml-1">Activity Timeline</h2>
+        
+        <div class="space-y-4">
+          <!-- Item 1 -->
+          <div class="bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
+            <div class="flex items-start gap-4">
+              <img src="https://ui-avatars.com/api/?name=Lisa+Chen&background=f3f4f6&color=374151&size=64" class="w-10 h-10 rounded-full" alt="Lisa Chen"/>
+              <div class="flex-1">
+                <div class="flex items-center justify-between mb-1">
+                  <div class="flex items-center gap-2">
+                    <span class="font-bold text-gray-800 text-sm">Lisa Chen</span>
+                    <span class="text-xs text-gray-400">EPF: 45789</span>
+                    <span class="text-gray-300">•</span>
+                    <span class="text-xs text-gray-500">Claims Processing</span>
+                  </div>
+                  <div class="text-xs text-gray-400">2 hours ago</div>
+                </div>
+                <p class="text-sm text-gray-600 mt-2 mb-3 leading-relaxed">Updated claim status to "Under Review" after receiving all required documentation from the policyholder. Medical reports have been forwarded to the medical review team for assessment.</p>
+                <div class="flex gap-4 text-xs text-gray-500">
+                  <button class="flex items-center gap-1.5 hover:text-teal-600"><svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.707 3.293a1 1 0 010 1.414L5.414 7H11a7 7 0 017 7v2a1 1 0 11-2 0v-2a5 5 0 00-5-5H5.414l2.293 2.293a1 1 0 11-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Reply</button>
+                  <button class="flex items-center gap-1.5 hover:text-teal-600"><svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg> Like</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Item 2 -->
+          <div class="bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
+            <div class="flex items-start gap-4">
+              <img src="https://ui-avatars.com/api/?name=Michael+Rodriguez&background=f3f4f6&color=374151&size=64" class="w-10 h-10 rounded-full" alt="Michael Rodriguez"/>
+              <div class="flex-1">
+                <div class="flex items-center justify-between mb-1">
+                  <div class="flex items-center gap-2">
+                    <span class="font-bold text-gray-800 text-sm">Michael Rodriguez</span>
+                    <span class="text-xs text-gray-400">EPF: 32156</span>
+                    <span class="text-gray-300">•</span>
+                    <span class="text-xs text-gray-500">Medical Review</span>
+                  </div>
+                  <div class="text-xs text-gray-400">5 hours ago</div>
+                </div>
+                <p class="text-sm text-gray-600 mt-2 mb-3 leading-relaxed">Medical review completed. All submitted reports are consistent with the claimed injury. Recommending approval for the full claim amount. No additional documentation required.</p>
+                <div class="flex gap-4 text-xs text-gray-500">
+                  <button class="flex items-center gap-1.5 hover:text-teal-600"><svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.707 3.293a1 1 0 010 1.414L5.414 7H11a7 7 0 017 7v2a1 1 0 11-2 0v-2a5 5 0 00-5-5H5.414l2.293 2.293a1 1 0 11-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Reply</button>
+                  <button class="flex items-center gap-1.5 hover:text-teal-600"><svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg> Like</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Item 3 -->
+          <div class="bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
+            <div class="flex items-start gap-4">
+              <img src="https://ui-avatars.com/api/?name=David+Thompson&background=f3f4f6&color=374151&size=64" class="w-10 h-10 rounded-full" alt="David Thompson"/>
+              <div class="flex-1">
+                <div class="flex items-center justify-between mb-1">
+                  <div class="flex items-center gap-2">
+                    <span class="font-bold text-gray-800 text-sm">David Thompson</span>
+                    <span class="text-xs text-gray-400">EPF: 67234</span>
+                    <span class="text-gray-300">•</span>
+                    <span class="text-xs text-gray-500">Customer Service</span>
+                  </div>
+                  <div class="text-xs text-gray-400">1 day ago</div>
+                </div>
+                <p class="text-sm text-gray-600 mt-2 mb-3 leading-relaxed">Spoke with policyholder Sarah Johnson regarding claim status. She provided additional witness statement as requested. Customer expressed satisfaction with the claim processing timeline.</p>
+                <div class="flex gap-4 text-xs text-gray-500">
+                  <button class="flex items-center gap-1.5 hover:text-teal-600"><svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.707 3.293a1 1 0 010 1.414L5.414 7H11a7 7 0 017 7v2a1 1 0 11-2 0v-2a5 5 0 00-5-5H5.414l2.293 2.293a1 1 0 11-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Reply</button>
+                  <button class="flex items-center gap-1.5 hover:text-teal-600"><svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg> Like</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Item 4 -->
+          <div class="bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
+            <div class="flex items-start gap-4">
+              <img src="https://ui-avatars.com/api/?name=Emma+Wilson&background=f3f4f6&color=374151&size=64" class="w-10 h-10 rounded-full" alt="Emma Wilson"/>
+              <div class="flex-1">
+                <div class="flex items-center justify-between mb-1">
+                  <div class="flex items-center gap-2">
+                    <span class="font-bold text-gray-800 text-sm">Emma Wilson</span>
+                    <span class="text-xs text-gray-400">EPF: 89123</span>
+                    <span class="text-gray-300">•</span>
+                    <span class="text-xs text-gray-500">Claims Intake</span>
+                  </div>
+                  <div class="text-xs text-gray-400">3 days ago</div>
+                </div>
+                <p class="text-sm text-gray-600 mt-2 mb-3 leading-relaxed">Initial claim received and validated. All required forms completed correctly. Assigned claim number CLM-2024-789456 and forwarded to processing team for review.</p>
+                <div class="flex gap-4 text-xs text-gray-500">
+                  <button class="flex items-center gap-1.5 hover:text-teal-600"><svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.707 3.293a1 1 0 010 1.414L5.414 7H11a7 7 0 017 7v2a1 1 0 11-2 0v-2a5 5 0 00-5-5H5.414l2.293 2.293a1 1 0 11-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Reply</button>
+                  <button class="flex items-center gap-1.5 hover:text-teal-600"><svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg> Like</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Item 5 -->
+          <div class="bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
+            <div class="flex items-start gap-4">
+              <img src="https://ui-avatars.com/api/?name=Robert+Kim&background=f3f4f6&color=374151&size=64" class="w-10 h-10 rounded-full" alt="Robert Kim"/>
+              <div class="flex-1">
+                <div class="flex items-center justify-between mb-1">
+                  <div class="flex items-center gap-2">
+                    <span class="font-bold text-gray-800 text-sm">Robert Kim</span>
+                    <span class="text-xs text-gray-400">EPF: 12345</span>
+                    <span class="text-gray-300">•</span>
+                    <span class="text-xs text-gray-500">Fraud Investigation</span>
+                  </div>
+                  <div class="text-xs text-gray-400">5 days ago</div>
+                </div>
+                <p class="text-sm text-gray-600 mt-2 mb-3 leading-relaxed">Preliminary fraud assessment completed. No red flags identified in the claim documentation or circumstances. Claim cleared for standard processing workflow.</p>
+                <div class="flex gap-4 text-xs text-gray-500">
+                  <button class="flex items-center gap-1.5 hover:text-teal-600"><svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.707 3.293a1 1 0 010 1.414L5.414 7H11a7 7 0 017 7v2a1 1 0 11-2 0v-2a5 5 0 00-5-5H5.414l2.293 2.293a1 1 0 11-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Reply</button>
+                  <button class="flex items-center gap-1.5 hover:text-teal-600"><svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg> Like</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-6 flex justify-center">
+          <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">Load More Activity</button>
+        </div>
+      </div>
+
+      <!-- Tab 4: Payment Status -->
+      <div id="tab-payment-status" class="tab-content">
+        <div class="bg-white rounded-lg border border-gray-200 p-8 mb-6 shadow-sm">
+          <h2 class="text-base font-bold text-gray-800 mb-10">Payment Process Timeline</h2>
+          
+          <div class="relative max-w-4xl mx-auto mb-6">
+            <!-- connecting line -->
+            <div class="absolute top-5 left-8 right-8 h-0.5 bg-gray-200"></div>
+            <div class="absolute top-5 left-8 w-[33%] h-0.5 bg-yellow-500"></div>
+            
+            <div class="relative flex justify-between">
+              <!-- Step 1 -->
+              <div class="flex flex-col items-center">
+                <div class="w-10 h-10 bg-green-500 text-white rounded-full flex items-center justify-center z-10 shadow-sm mb-3">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414A1 1 0 0119 9.414V19a2 2 0 01-2 2z"/></svg>
+                </div>
+                <div class="text-sm font-bold text-gray-800">Voucher Generated</div>
+                <div class="text-xs text-gray-500">Completed</div>
+                <div class="text-xs text-green-500 font-medium">Mar 20, 2024</div>
+              </div>
+              
+              <!-- Step 2 -->
+              <div class="flex flex-col items-center">
+                <div class="w-10 h-10 bg-yellow-500 text-white rounded-full flex items-center justify-center z-10 shadow-sm mb-3">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2"/></svg>
+                </div>
+                <div class="text-sm font-bold text-gray-800">Pending Approval</div>
+                <div class="text-xs text-gray-500">In Progress</div>
+                <div class="text-xs text-yellow-600 font-medium">Current Stage</div>
+              </div>
+              
+              <!-- Step 3 -->
+              <div class="flex flex-col items-center opacity-50">
+                <div class="w-10 h-10 bg-gray-400 text-white rounded-full flex items-center justify-center z-10 shadow-sm mb-3">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                </div>
+                <div class="text-sm font-bold text-gray-800">Cheque Printed</div>
+                <div class="text-xs text-gray-500">Pending</div>
+                <div class="text-xs text-gray-400">Not Started</div>
+              </div>
+              
+              <!-- Step 4 -->
+              <div class="flex flex-col items-center opacity-50">
+                <div class="w-10 h-10 bg-gray-400 text-white rounded-full flex items-center justify-center z-10 shadow-sm mb-3">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/></svg>
+                </div>
+                <div class="text-sm font-bold text-gray-800">Payment Dispatched</div>
+                <div class="text-xs text-gray-500">Pending</div>
+                <div class="text-xs text-gray-400">Not Started</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg border border-gray-200 mb-6 shadow-sm">
+          <div class="px-5 py-4 border-b border-gray-100">
+            <h2 class="text-sm font-semibold text-gray-800">Document Movement</h2>
+          </div>
+          <table class="w-full text-xs text-center">
+            <thead class="bg-gray-50 border-b border-gray-100">
+              <tr>
+                <th class="py-3 px-4 font-medium text-gray-500">Voucher Number</th>
+                <th class="py-3 px-4 font-medium text-gray-500">Payee Name</th>
+                <th class="py-3 px-4 font-medium text-gray-500">Amount (LKR)</th>
+                <th class="py-3 px-4 font-medium text-gray-500">Cheque Number EPF</th>
+                <th class="py-3 px-4 font-medium text-gray-500">Date</th>
+                <th class="py-3 px-4 font-medium text-gray-500">Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="py-4 px-4 text-gray-800 font-medium">VCH-2024-001234</td>
+                <td class="py-4 px-4 text-gray-600">Ashani Shaunika</td>
+                <td class="py-4 px-4 text-gray-800 font-bold">1,250,000.00</td>
+                <td class="py-4 px-4 text-gray-500">CHQ-789456123</td>
+                <td class="py-4 px-4 text-gray-500">Mar 20, 2024</td>
+                <td class="py-4 px-4">
+                  <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-[10px] font-medium">Pending Approval</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="py-4 px-4 text-gray-800 font-medium">VCH-2024-001235</td>
+                <td class="py-4 px-4 text-gray-600">Madeesha alwis</td>
+                <td class="py-4 px-4 text-gray-800 font-bold">850,000.00</td>
+                <td class="py-4 px-4 text-gray-500">CHQ-789456124</td>
+                <td class="py-4 px-4 text-gray-500">Mar 18, 2024</td>
+                <td class="py-4 px-4">
+                  <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-medium">Dispatched</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="py-4 px-4 text-gray-800 font-medium">VCH-2024-001235</td>
+                <td class="py-4 px-4 text-gray-600">Bashitha Alahakoon</td>
+                <td class="py-4 px-4 text-gray-800 font-bold">400,000.00</td>
+                <td class="py-4 px-4 text-gray-500">CHQ-789456125</td>
+                <td class="py-4 px-4 text-gray-500">Mar 15, 2024</td>
+                <td class="py-4 px-4">
+                  <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-[10px] font-medium">Printed</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="px-4 py-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+            <div>Showing 3 of 3 payments</div>
+            <div class="flex gap-2">
+              <button class="px-3 py-1.5 border border-gray-300 rounded text-gray-400">Previous</button>
+              <button class="px-3 py-1.5 border border-gray-300 rounded text-gray-400">Next</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 5: Technical Reports -->
+      <div id="tab-technical-reports" class="tab-content">
+        <!-- File Upload -->
+        <div class="border-2 border-dashed border-gray-300 rounded-lg bg-gray-50/50 p-8 flex flex-col items-center justify-center mb-6">
+          <svg class="w-10 h-10 text-gray-400 mb-3" fill="currentColor" viewBox="0 0 20 20"><path d="M5.5 13a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1.977A4.5 4.5 0 1113.5 13H11V9.414l1.293 1.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13H5.5z"/></svg>
+          <div class="text-sm text-gray-600 mb-1">Click to upload or drag and drop</div>
+          <div class="text-xs text-gray-400 mb-4">PDF, DOC, DOCX, JPG, PNG (Max 10MB)</div>
+          <button class="bg-teal-600 text-white text-xs font-medium px-5 py-2 rounded-md hover:bg-teal-700 flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+            Upload Document
+          </button>
+        </div>
+
+        <!-- Categorization -->
+        <div class="mb-6">
+          <label class="block text-xs font-medium text-gray-600 mb-1">Categorization</label>
+          <select class="w-full text-sm border border-gray-300 rounded-md px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-600">
+            <option>All Category</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-8">
+          <!-- Video Inspection -->
+          <div>
+            <h2 class="text-sm font-bold text-gray-800 mb-4">Video Inspection</h2>
+            <!-- Video Player Mockup -->
+            <div class="bg-gray-900 rounded-lg overflow-hidden relative mb-3 h-64">
+              <!-- Placeholder for video -->
+              <div class="absolute inset-0 flex items-center justify-center">
+                <button class="w-14 h-14 bg-white/90 rounded-full flex items-center justify-center shadow-lg hover:scale-105 transition-transform text-gray-800">
+                  <svg class="w-6 h-6 ml-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/></svg>
+                </button>
+              </div>
+              <div class="absolute bottom-0 left-0 right-0 h-10 bg-black/60 flex items-center px-4 text-xs text-white">
+                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/></svg>
+                <span>0:00 / 4:32</span>
+                <div class="flex-1 mx-4 h-1 bg-gray-500 rounded-full"><div class="w-1/4 h-full bg-teal-500 rounded-full"></div></div>
+                <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd"/></svg>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+              </div>
+            </div>
+            <!-- Thumbnails -->
+            <div class="flex gap-2 overflow-hidden">
+              <div class="w-16 h-20 bg-gray-300 rounded overflow-hidden"></div>
+              <div class="w-16 h-20 bg-gray-300 rounded overflow-hidden"></div>
+              <div class="w-16 h-20 bg-gray-300 rounded overflow-hidden"></div>
+              <div class="w-16 h-20 bg-gray-300 rounded overflow-hidden"></div>
+              <div class="w-16 h-20 bg-gray-300 rounded overflow-hidden"></div>
+            </div>
+          </div>
+
+          <!-- TAB Reports -->
+          <div>
+            <h2 class="text-sm font-bold text-gray-800 mb-4">TAB Reports</h2>
+            <div class="space-y-3">
+              <!-- Item 1 -->
+              <div class="bg-white border border-gray-200 rounded-lg p-4 flex items-center justify-between hover:shadow-sm transition-shadow">
+                <div class="flex items-center gap-4">
+                  <div class="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center text-red-500">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/></svg>
+                  </div>
+                  <div>
+                    <div class="text-sm font-semibold text-gray-800">Initial Damage Assessment</div>
+                    <div class="text-xs text-gray-500 mt-0.5">Technical Officer: Sarah Johnson</div>
+                    <div class="text-xs text-gray-400 mt-0.5">Filed: Mar 16, 2024 • 2.4 MB</div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3 text-teal-600">
+                  <button class="flex items-center gap-1 text-xs font-medium hover:text-teal-800"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg> View</button>
+                  <button class="hover:text-teal-800"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg></button>
+                </div>
+              </div>
+              <!-- Item 2 -->
+              <div class="bg-white border border-gray-200 rounded-lg p-4 flex items-center justify-between hover:shadow-sm transition-shadow">
+                <div class="flex items-center gap-4">
+                  <div class="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center text-red-500">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/></svg>
+                  </div>
+                  <div>
+                    <div class="text-sm font-semibold text-gray-800">Cost Estimation Analysis</div>
+                    <div class="text-xs text-gray-500 mt-0.5">Technical Officer: Emily Rodriguez</div>
+                    <div class="text-xs text-gray-400 mt-0.5">Filed: Mar 20, 2024 • 1.8 MB</div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3 text-teal-600">
+                  <button class="flex items-center gap-1 text-xs font-medium hover:text-teal-800"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg> View</button>
+                  <button class="hover:text-teal-800"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg></button>
+                </div>
+              </div>
+              <!-- Item 3 -->
+              <div class="bg-white border border-gray-200 rounded-lg p-4 flex items-center justify-between hover:shadow-sm transition-shadow">
+                <div class="flex items-center gap-4">
+                  <div class="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center text-red-500">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/></svg>
+                  </div>
+                  <div>
+                    <div class="text-sm font-semibold text-gray-800">Environmental Impact Assessment</div>
+                    <div class="text-xs text-gray-500 mt-0.5">Technical Officer: David Park</div>
+                    <div class="text-xs text-gray-400 mt-0.5">Filed: Mar 21, 2024 • 3.2 MB</div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3 text-teal-600">
+                  <button class="flex items-center gap-1 text-xs font-medium hover:text-teal-800"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg> View</button>
+                  <button class="hover:text-teal-800"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg></button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="tab-task-movement" class="tab-content">
+            <div class="bg-white rounded-lg border border-gray-200 mb-6 shadow-sm">
+          <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+            <h2 class="text-sm font-semibold text-gray-800">Task Movement Tracking</h2>
+            <div class="flex items-center gap-3">
+              <button class="flex items-center gap-1.5 text-xs text-gray-600 border border-gray-300 rounded-md px-3 py-1.5 hover:bg-gray-50">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                Export to Excel
+              </button>
+              <span class="bg-red-50 text-red-600 text-xs font-medium px-3 py-1.5 rounded-md border border-red-200">14 records found</span>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs text-center">
+              <thead class="bg-gray-50 border-b border-gray-100">
+                <tr>
+                  <th class="py-3 px-4 font-medium text-gray-500">Task Name</th>
+                  <th class="py-3 px-4 font-medium text-gray-500">Claim Number</th>
+                  <th class="py-3 px-4 font-medium text-gray-500">Asigned Date</th>
+                  <th class="py-3 px-4 font-medium text-gray-500">Handling Officer</th>
+                  <th class="py-3 px-4 font-medium text-gray-500">Total Turnarround Time</th>
+                  <th class="py-3 px-4 font-medium text-gray-500">Assigned by</th>
+                  <th class="py-3 px-4 font-medium text-gray-500">Assignee Name</th>
+                  <th class="py-3 px-4 font-medium text-gray-500">Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <tr>
+                  <td class="py-4 px-4 text-gray-600">Outside Loss Adjuster (Task 1)</td>
+                  <td class="py-4 px-4 text-gray-600">CLM-2024-0156</td>
+                  <td class="py-4 px-4 text-gray-800 font-medium">Jan 15, 2024</td>
+                  <td class="py-4 px-4 text-gray-600">Kusal Mendis</td>
+                  <td class="py-4 px-4">
+                    <span class="inline-flex items-center gap-1 bg-yellow-100 text-yellow-700 px-2 py-1 rounded font-medium">
+                      <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                      5 Days (Running)
+                    </span>
+                  </td>
+                  <td class="py-4 px-4 text-gray-800">Ravindu Dahanayake<br/><span class="text-gray-500">(Risk Engineers)</span></td>
+                  <td class="py-4 px-4 text-gray-600">Chamal Achintha</td>
+                  <td class="py-4 px-4">
+                    <span class="inline-flex items-center gap-1 bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full font-medium">
+                      <svg class="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                      In Progress
+                    </span>
+                  </td>
+                  <td class="py-4 px-4 text-gray-600" ></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="px-4 py-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+            <div>Showing 1 to 5 of 24 results</div>
+            <div class="flex gap-1">
+              <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">&lt;</button>
+              <button class="w-7 h-7 bg-teal-600 text-white rounded flex items-center justify-center">1</button>
+              <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">2</button>
+              <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">3</button>
+              <span class="px-1 flex items-center">...</span>
+              <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">5</button>
+              <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">&gt;</button>
+            </div>
+          </div>
+        </div>
+            
+
+            
+          </div>
+
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    renderSidebar('claim-status-360');
+
+    function switchTab(tabId) {
+      // Hide all contents
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      // Show selected content
+      document.getElementById(tabId).classList.add('active');
+      
+      // Update buttons
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        if (btn.getAttribute('data-target') === tabId) {
+          btn.classList.remove('tab-inactive');
+          btn.classList.add('tab-active');
+        } else {
+          btn.classList.remove('tab-active');
+          btn.classList.add('tab-inactive');
+        }
+      });
+    }
+  </script>
+</body>
+</html>

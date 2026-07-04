@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Settings — Insurance Claims Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: { 600: '#00ADBB', 700: '#008A9A', 50: '#f0fdfa' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+
+    /* Tab styles */
+    .tab-btn { transition: all 0.15s ease; }
+    .tab-btn.active { background-color: #00ADBB; color: #fff; border-color: #00ADBB; }
+    .tab-btn:not(.active) { background-color: #fff; color: #374151; border-color: #E5E7EB; }
+    .tab-btn:not(.active):hover { background-color: #f9fafb; }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* Toggle switch */
+    .toggle { position: relative; display: inline-flex; align-items: center; cursor: pointer; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-track {
+      width: 36px; height: 20px; background: #D1D5DB;
+      border-radius: 9999px; transition: background 0.2s;
+    }
+    .toggle input:checked + .toggle-track { background: #00ADBB; }
+    .toggle-thumb {
+      position: absolute; left: 3px; top: 3px;
+      width: 14px; height: 14px; background: #fff;
+      border-radius: 50%; transition: transform 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    }
+    .toggle input:checked ~ .toggle-thumb { transform: translateX(16px); }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen pb-20">
+
+  <!-- NAVBAR -->
+  <div id="navbar-container"></div>
+  <script src="navbar-component.js"></script>
+
+  <!-- SIDEBAR -->
+  <div id="sidebar-container"></div>
+  <script src="sidebar-component.js"></script>
+
+  <main class="ml-64 pt-16 min-h-screen">
+    <div class="p-6 ">
+      <h1 class="text-xl font-bold text-gray-800 mb-5">System Administration</h1>
+
+      <!-- ── Tab Navigation ── -->
+      <div class="flex flex-wrap gap-2 mb-6">
+        <button class="tab-btn px-4 py-2 text-xs font-medium rounded border active" data-tab="event-management" onclick="switchTab('event-management')">Event Management (CAT/Riot)</button>
+        <button class="tab-btn px-4 py-2 text-xs font-medium rounded border" data-tab="register-user" onclick="switchTab('register-user')">Register System User</button>
+        <button class="tab-btn px-4 py-2 text-xs font-medium rounded border" data-tab="service-providers" onclick="switchTab('service-providers')">Service Providers</button>
+        <button class="tab-btn px-4 py-2 text-xs font-medium rounded border" data-tab="document-master" onclick="switchTab('document-master')">Document Master</button>
+        <button class="tab-btn px-4 py-2 text-xs font-medium rounded border" data-tab="add-provider-category" onclick="switchTab('add-provider-category')">Add Provider Category</button>
+      </div>
+
+      <!-- ════════════════════════════════════════
+           TAB 1 – Event Management (CAT/Riot)
+      ════════════════════════════════════════ -->
+      <div id="tab-event-management" class="tab-pane">
+        <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+          <div class="p-6 border-b border-gray-100">
+            <h2 class="text-sm font-semibold text-gray-800 mb-1">Add New Event</h2>
+            <p class="text-xs text-gray-500">Create and configure new catastrophic or riot events</p>
+          </div>
+          <div class="p-6">
+            <div class="grid grid-cols-3 gap-4 mb-4">
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Event Name</label>
+                <input type="text" placeholder="Enter event name" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"/>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Event Type</label>
+                <select class="w-full px-3 py-2 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-500 bg-white">
+                  <option value="">Select Event Type</option>
+                  <option>CAT</option>
+                  <option>Riot</option>
+                </select>
+              </div>
+             <div>
+            <div class="flex items-center justify-end gap-2">
+              <button class="bg-teal-600 text-white text-xs font-medium px-5 py-2 rounded-md hover:bg-teal-700 transition-colors">Create Event</button>
+            </div>
+            </div>
+          </div>
+          </div>
+          </div>
+
+          <!-- Index Rules table -->
+           <div class="bg-white rounded-lg border border-gray-200 shadow-sm mt-6">
+          <div class="border-t border-gray-100">
+            <div class="px-6 py-4 flex items-center justify-between">
+              <h3 class="text-sm font-semibold text-gray-800">Existing Events</h3>
+              <input type="text" placeholder="Search events..." class="w-[150px] px-3 py-2 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 mb-4"/> 
+            </div>
+          </div>
+          <table class="w-full text-xs">
+            <thead class="bg-gray-50 border-b border-gray-100">
+                <tr>
+                  <th class="py-3 px-6 font-medium text-gray-500 text-center">Event ID</th>
+                  <th class="py-3 px-6 font-medium text-gray-500 text-center">Event Name</th>
+                  <th class="py-3 px-6 font-medium text-gray-500 text-center">Event Type</th>
+                  <th class="py-3 px-6 font-medium text-gray-500 text-center">Date Added</th>
+                  <th class="py-3 px-6 font-medium text-gray-500 text-center">Status</th>
+                  <th class="py-3 px-6 font-medium text-gray-500 text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <tr>
+                  <td class="py-4 px-6 text-center font-medium text-gray-800">EVT-2024-001</td>
+                  <td class="py-4 px-6 text-center text-gray-600">Gampaha Floods 2024</td>
+                  <td class="py-4 px-6 text-center text-gray-600"><span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-xl">CAT</span></td>
+                  <td class="py-4 px-6 text-center text-gray-600">2022-04-09</td>
+                  <td class="py-4 px-6 text-center">
+                    <label class="toggle"><input type="checkbox" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+                  </td>
+                  <td class="py-4 px-6 text-center">
+                    <div class="flex items-center justify-center gap-2">
+                      <button class="text-teal-600 hover:text-teal-800"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+                      <span class="text-teal-600 hover:text-teal-800">Edit</span>
+                    </div>
+                  </td>
+                </tr>
+               <tr>
+                  <td class="py-4 px-6 text-center font-medium text-gray-800">EVT-2024-001</td>
+                  <td class="py-4 px-6 text-center text-gray-600">Gampaha Floods 2024</td>
+                  <td class="py-4 px-6 text-center text-gray-600"><span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-xl">CAT</span></td>
+                  <td class="py-4 px-6 text-center text-gray-600">2022-04-09</td>
+                  <td class="py-4 px-6 text-center">
+                    <label class="toggle"><input type="checkbox" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+                  </td>
+                  <td class="py-4 px-6 text-center">
+                    <div class="flex items-center justify-center gap-2">
+                      <button class="text-teal-600 hover:text-teal-800"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+                        <span class="text-teal-600 hover:text-teal-800">Edit</span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="px-6 py-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+              <span>Showing 1 to 5 of 24 results</span>
+              <div class="flex gap-1">
+                <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">&lt;</button>
+                <button class="w-7 h-7 bg-teal-600 text-white rounded flex items-center justify-center">1</button>
+                <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">2</button>
+                <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">3</button>
+                <span class="px-1 flex items-center">...</span>
+                <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">5</button>
+                <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">&gt;</button>
+              </div>
+            </div>
+          </div>
+          </div>
+        
+
+      <!-- ════════════════════════════════════════
+           TAB 2 – Register System User
+      ════════════════════════════════════════ -->
+      <div id="tab-register-user" class="tab-pane">
+        <div class="bg-white rounded-lg border border-gray-200 shadow-sm mb-6">
+          <div class="p-6">
+            <h2 class="text-sm font-semibold text-gray-800 mb-0.5">Register System User</h2>
+            <p class="text-xs text-gray-500">Add new users to the insurance claims system</p>
+          </div>
+          <div class="p-6">
+            <!-- EPF Number -->
+            <div class="mb-4">
+              <label class="block text-xs font-medium text-gray-600 mb-1">EPF Number</label>
+              <div class="flex gap-3">
+                <input type="text" placeholder="Enter EPF number" class="flex-1 px-3 py-2 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"/>
+                <button class="bg-teal-600 text-white text-xs font-medium px-6 py-2 rounded-md hover:bg-teal-700 transition-colors">Search</button>
+              </div>
+            </div>
+
+            <!-- User Details Grid -->
+            <div class="grid grid-cols-5 gap-3 mb-4">
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Full Name</label>
+                <input type="text" placeholder="Enter full name" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"/>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Branch</label>
+                <select class="w-full px-3 py-2 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white text-gray-500">
+                  <option value="">Select Branch</option>
+                  <option>Colombo Main</option>
+                  <option>Kandy Branch</option>
+                  <option>Galle Branch</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Department</label>
+                <select class="w-full px-3 py-2 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white text-gray-500">
+                  <option value="">Select Department</option>
+                  <option>Fire Department</option>
+                  <option>Marine Department</option>
+                  <option>Motor Department</option>
+                  <option>General</option>
+                  <option>Casualty</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Category</label>
+                <select class="w-full px-3 py-2 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white text-gray-500">
+                  <option value="">Select Category</option>
+                  <option>Loss Adjuster</option>
+                  <option>Investigator</option>
+                  <option>Risk Engineering</option>
+                  <option>Re-Insurance</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Extension No</label>
+                <input type="text" placeholder="Enter Extension No" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"/>
+              </div>
+            </div>
+
+            <!-- Number Checkboxes -->
+            <div class="grid grid-cols-5 gap-3 mb-5">
+              <label class="flex items-center gap-2 text-xs text-gray-700"><input type="checkbox" class="rounded accent-teal-600"/> 0</label>
+              <label class="flex items-center gap-2 text-xs text-gray-700"><input type="checkbox" class="rounded accent-teal-600"/> 1</label>
+              <label class="flex items-center gap-2 text-xs text-gray-700"><input type="checkbox" class="rounded accent-teal-600"/> 2</label>
+              <label class="flex items-center gap-2 text-xs text-gray-700"><input type="checkbox" class="rounded accent-teal-600"/> 3</label>
+              <label class="flex items-center gap-2 text-xs text-gray-700"><input type="checkbox" class="rounded accent-teal-600"/> 4</label>
+              <label class="flex items-center gap-2 text-xs text-gray-700"><input type="checkbox" class="rounded accent-teal-600"/> 5</label>
+              <label class="flex items-center gap-2 text-xs text-gray-700"><input type="checkbox" class="rounded accent-teal-600"/> 6</label>
+              <label class="flex items-center gap-2 text-xs text-gray-700"><input type="checkbox" class="rounded accent-teal-600"/> 7</label>
+              <label class="flex items-center gap-2 text-xs text-gray-700"><input type="checkbox" class="rounded accent-teal-600"/> 8</label>
+              <label class="flex items-center gap-2 text-xs text-gray-700"><input type="checkbox" class="rounded accent-teal-600"/> 9</label>
+            </div>
+
+            <!-- System Admin Access -->
+            <div class="bg-blue-50 border border-blue-100 rounded-lg px-5 py-4 flex items-center justify-between mb-5">
+              <div>
+                <div class="text-xs font-semibold text-blue-700">System Admin Access</div>
+                <div class="text-xs text-blue-500 mt-0.5">Grant administrative privileges to this user</div>
+              </div>
+              <label class="toggle"><input type="checkbox"/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+            </div>
+
+            <!-- Save -->
+            <div class="flex justify-end">
+              <button class="bg-teal-600 text-white text-xs font-medium px-6 py-2 rounded-md hover:bg-teal-700 transition-colors">Save User</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- System Users table -->
+        <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+          <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+            <h3 class="text-sm font-semibold text-gray-800">System Users</h3>
+            <div class="relative">
+              <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35"/></svg>
+              <input type="text" placeholder="Search Users..." class="pl-9 pr-3 py-2 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 w-52"/>
+            </div>
+          </div>
+          <table class="w-full text-xs">
+            <thead class="bg-gray-50 border-b border-gray-100">
+              <tr>
+                <th class="py-3 px-6 font-medium text-gray-500 text-center">Name</th>
+                <th class="py-3 px-6 font-medium text-gray-500 text-center">EPF</th>
+                <th class="py-3 px-6 font-medium text-gray-500 text-center">Branch</th>
+                <th class="py-3 px-6 font-medium text-gray-500 text-center">Status</th>
+                <th class="py-3 px-6 font-medium text-gray-500 text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="py-4 px-6 text-center font-medium text-gray-800">Ravindu Dahanayeka</td>
+                <td class="py-4 px-6 text-center text-gray-600">EPF001234</td>
+                <td class="py-4 px-6 text-center text-gray-600">Colombo Main</td>
+                <td class="py-4 px-6 text-center"><label class="toggle"><input type="checkbox" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label></td>
+                <td class="py-4 px-6 text-center"><div class="flex items-center justify-center gap-2"><button class="text-teal-600 hover:text-teal-800"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button><button class="text-red-500 hover:text-red-700"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button></div></td>
+              </tr>
+              <tr class="bg-gray-50">
+                <td class="py-4 px-6 text-center font-medium text-gray-800">Madeesha Alvis</td>
+                <td class="py-4 px-6 text-center text-gray-600">EPF005678</td>
+                <td class="py-4 px-6 text-center text-gray-600">Kandy Branch</td>
+                <td class="py-4 px-6 text-center"><label class="toggle"><input type="checkbox" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label></td>
+                <td class="py-4 px-6 text-center"><div class="flex items-center justify-center gap-2"><button class="text-teal-600 hover:text-teal-800"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button><button class="text-red-500 hover:text-red-700"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button></div></td>
+              </tr>
+              <tr>
+                <td class="py-4 px-6 text-center font-medium text-gray-800">Udhantha Ariyarathna</td>
+                <td class="py-4 px-6 text-center text-gray-600">EPF009012</td>
+                <td class="py-4 px-6 text-center text-gray-600">Galle Branch</td>
+                <td class="py-4 px-6 text-center"><label class="toggle"><input type="checkbox" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label></td>
+                <td class="py-4 px-6 text-center"><div class="flex items-center justify-center gap-2"><button class="text-teal-600 hover:text-teal-800"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button><button class="text-red-500 hover:text-red-700"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button></div></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="px-6 py-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+            <span>Showing 1 to 5 of 24 results</span>
+            <div class="flex gap-1">
+              <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">&lt;</button>
+              <button class="w-7 h-7 bg-teal-600 text-white rounded flex items-center justify-center">1</button>
+              <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">2</button>
+              <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">3</button>
+              <span class="px-1 flex items-center">...</span>
+              <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">5</button>
+              <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">&gt;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════
+           TAB 3 – Service Providers
+      ════════════════════════════════════════ -->
+      <div id="tab-service-providers" class="tab-pane">
+        <!-- Register form -->
+        <div class="bg-white rounded-lg border border-gray-200 shadow-sm mb-6">
+          <div class="p-6 border-b border-gray-100">
+            <h2 class="text-sm font-semibold text-gray-800 mb-0.5">Register External Provider</h2>
+            <p class="text-xs text-gray-500">Add new service provider to the system</p>
+          </div>
+          <div class="p-6">
+            <!-- Row 1 -->
+            <div class="grid grid-cols-5 gap-3 mb-4">
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Provider Name</label>
+                <input type="text" placeholder="Enter provider full name" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"/>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">NIC Number</label>
+                <input type="text" placeholder="Enter NIC number" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"/>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Email Address</label>
+                <input type="email" placeholder="Enter Email Address" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"/>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Contact Number</label>
+                <input type="text" placeholder="Enter Contact Number" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"/>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Category</label>
+                <select class="w-full px-3 py-2 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white text-gray-500">
+                  <option value="">Select category</option>
+                  <option>Loss Adjuster</option>
+                  <option>Investigator</option>
+                  <option>Risk Engineering</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Department checkboxes -->
+            <div class="mb-5">
+              <label class="block text-xs font-medium text-gray-600 mb-2">Department</label>
+              <div class="flex flex-wrap gap-6">
+                <label class="flex items-center gap-2 text-xs text-gray-700"><input type="checkbox" class="accent-teal-600"/> All</label>
+                <label class="flex items-center gap-2 text-xs text-gray-700"><input type="checkbox" class="accent-teal-600"/> Fire Department</label>
+                <label class="flex items-center gap-2 text-xs text-gray-700"><input type="checkbox" class="accent-teal-600"/> Marine Department</label>
+                <label class="flex items-center gap-2 text-xs text-gray-700"><input type="checkbox" class="accent-teal-600"/> Motor Department</label>
+                <label class="flex items-center gap-2 text-xs text-gray-700"><input type="checkbox" class="accent-teal-600"/> General</label>
+                <label class="flex items-center gap-2 text-xs text-gray-700"><input type="checkbox" class="accent-teal-600"/> Casualty</label>
+              </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex justify-end gap-3">
+              <button class="bg-teal-600 text-white text-xs font-medium px-5 py-2 rounded-md hover:bg-teal-700 transition-colors flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                Register Provider
+              </button>
+              <button class="border border-gray-300 text-gray-600 text-xs font-medium px-5 py-2 rounded-md hover:bg-gray-50 transition-colors">Clear Form</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Registered Service Providers table -->
+        <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+          <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+            <h3 class="text-sm font-semibold text-gray-800">Registered Service Providers</h3>
+            <div class="flex gap-2">
+              <div class="relative">
+                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35"/></svg>
+                <input type="text" placeholder="Search Provider Name, NIC, Mobile No..." class="pl-9 pr-3 py-2 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 w-64"/>
+              </div>
+              <button class="bg-teal-600 text-white text-xs font-medium px-5 py-2 rounded-md hover:bg-teal-700 transition-colors">Search</button>
+            </div>
+          </div>
+          <table class="w-full text-xs">
+            <thead class="bg-gray-50 border-b border-gray-100">
+              <tr>
+                <th class="py-3 px-6 font-medium text-gray-500 text-center">Name</th>
+                <th class="py-3 px-6 font-medium text-gray-500 text-center">NIC</th>
+                <th class="py-3 px-6 font-medium text-gray-500 text-center">Mobile No</th>
+                <th class="py-3 px-6 font-medium text-gray-500 text-center">Email</th>
+                <th class="py-3 px-6 font-medium text-gray-500 text-center">Category</th>
+                <th class="py-3 px-6 font-medium text-gray-500 text-center">Status</th>
+                <th class="py-3 px-6 font-medium text-gray-500 text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="py-4 px-6 text-center font-medium text-gray-800">Ravindu Dahanayeka</td>
+                <td class="py-4 px-6 text-center text-gray-600">987654321V</td>
+                <td class="py-4 px-6 text-center text-gray-600">077 112 5567</td>
+                <td class="py-4 px-6 text-center text-gray-600">madeeshasilva@gmail.com</td>
+                <td class="py-4 px-6 text-center text-gray-600">Loss Adjuster</td>
+                <td class="py-4 px-6 text-center"><label class="toggle"><input type="checkbox" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label></td>
+                <td class="py-4 px-6 text-center"><div class="flex items-center justify-center gap-2"><button class="text-teal-600 hover:text-teal-800"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button><button class="text-red-500 hover:text-red-700"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button></div></td>
+              </tr>
+              <tr class="bg-gray-50">
+                <td class="py-4 px-6 text-center font-medium text-gray-800">Madeesha Alvis</td>
+                <td class="py-4 px-6 text-center text-gray-600">876543210V</td>
+                <td class="py-4 px-6 text-center text-gray-600">078 568 4257</td>
+                <td class="py-4 px-6 text-center text-gray-600">madesilva@gmail.com</td>
+                <td class="py-4 px-6 text-center text-gray-600">Investigator</td>
+                <td class="py-4 px-6 text-center"><label class="toggle"><input type="checkbox" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label></td>
+                <td class="py-4 px-6 text-center"><div class="flex items-center justify-center gap-2"><button class="text-teal-600 hover:text-teal-800"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button><button class="text-red-500 hover:text-red-700"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button></div></td>
+              </tr>
+              <tr>
+                <td class="py-4 px-6 text-center font-medium text-gray-800">Udhantha Ariyarathna</td>
+                <td class="py-4 px-6 text-center text-gray-600">765432109V</td>
+                <td class="py-4 px-6 text-center text-gray-600">077 478 7284</td>
+                <td class="py-4 px-6 text-center text-gray-600">zsfdvmadeeshaa@gmail.com</td>
+                <td class="py-4 px-6 text-center text-gray-600">Loss Adjuster</td>
+                <td class="py-4 px-6 text-center"><label class="toggle"><input type="checkbox" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label></td>
+                <td class="py-4 px-6 text-center"><div class="flex items-center justify-center gap-2"><button class="text-teal-600 hover:text-teal-800"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button><button class="text-red-500 hover:text-red-700"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button></div></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="px-6 py-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+            <span>Showing 1 to 5 of 24 results</span>
+            <div class="flex gap-1">
+              <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">&lt;</button>
+              <button class="w-7 h-7 bg-teal-600 text-white rounded flex items-center justify-center">1</button>
+              <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">2</button>
+              <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">3</button>
+              <span class="px-1 flex items-center">...</span>
+              <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">5</button>
+              <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">&gt;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════
+           TAB 4 – Document Master  (default active)
+      ════════════════════════════════════════ -->
+      <div id="tab-document-master" class="tab-pane active">
+        <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+          <!-- Form -->
+          <div class="p-6 border-b border-gray-100">
+            <h2 class="text-sm font-semibold text-gray-800 mb-4">Add / Edit Required Documents</h2>
+            <div class="grid grid-cols-4 gap-3 items-end">
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Policy Type</label>
+                <select class="w-full px-3 py-2 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white text-gray-500">
+                  <option value="">Select Category</option>
+                  <option>Marine</option>
+                  <option>Fire</option>
+                  <option>Motor</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Sub Policy Type</label>
+                <select class="w-full px-3 py-2 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white text-gray-500">
+                  <option value="">Select Category</option>
+                  <option>Marine 1</option>
+                  <option>Fire 1</option>
+                  <option>Motor 1</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Document Name</label>
+                <input type="text" placeholder="Enter document name" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"/>
+              </div>
+              <div>
+                <button class="w-[250px] bg-teal-600 text-white text-xs font-medium px-5 py-2 rounded-md hover:bg-teal-700 transition-colors">Save Document</button>
+              </div>
+            </div>
+          </div>
+          </div>
+
+          <!-- Index Rules table -->
+          <div class="bg-white rounded-lg border border-gray-200 shadow-sm mt-6">
+            <div class="px-6 py-4 border-b border-gray-100"><h3 class="text-sm font-semibold text-gray-800">Index Rules</h3></div>
+            <table class="w-full text-xs">
+              <thead class="bg-gray-50 border-b border-gray-100">
+                <tr>
+                  <th class="py-3 px-6 font-medium text-gray-500 text-center">Policy Type</th>
+                  <th class="py-3 px-6 font-medium text-gray-500 text-center">Sub Policy Type</th>
+                  <th class="py-3 px-6 font-medium text-gray-500 text-center">Document Name</th>
+                  <th class="py-3 px-6 font-medium text-gray-500 text-center">Status</th>
+                  <th class="py-3 px-6 font-medium text-gray-500 text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <tr>
+                  <td class="py-4 px-6 text-center text-gray-600">Marine</td>
+                  <td class="py-4 px-6 text-center text-gray-600">Marine 1</td>
+                  <td class="py-4 px-6 text-center font-semibold text-gray-800">Driver License</td>
+                  <td class="py-4 px-6 text-center"><label class="toggle"><input type="checkbox" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label></td>
+                  <td class="py-4 px-6 text-center"><div class="flex items-center justify-center gap-2"><button class="text-teal-600 hover:text-teal-800"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button><button class="text-red-500 hover:text-red-700"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button></div></td>
+                </tr>
+                <tr class="bg-gray-50">
+                  <td class="py-4 px-6 text-center text-gray-600">Fire</td>
+                  <td class="py-4 px-6 text-center text-gray-600">Fire 1</td>
+                  <td class="py-4 px-6 text-center font-semibold text-gray-800">First statement</td>
+                  <td class="py-4 px-6 text-center"><label class="toggle"><input type="checkbox" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label></td>
+                  <td class="py-4 px-6 text-center"><div class="flex items-center justify-center gap-2"><button class="text-teal-600 hover:text-teal-800"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button><button class="text-red-500 hover:text-red-700"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button></div></td>
+                </tr>
+                <tr>
+                  <td class="py-4 px-6 text-center text-gray-600">Motor</td>
+                  <td class="py-4 px-6 text-center text-gray-600">Motor 1</td>
+                  <td class="py-4 px-6 text-center font-semibold text-gray-800">Letter</td>
+                  <td class="py-4 px-6 text-center"><label class="toggle"><input type="checkbox"/><div class="toggle-track"></div><div class="toggle-thumb"></div></label></td>
+                  <td class="py-4 px-6 text-center"><div class="flex items-center justify-center gap-2"><button class="text-teal-600 hover:text-teal-800"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button><button class="text-red-500 hover:text-red-700"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button></div></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="px-6 py-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+              <span>Showing 1 to 5 of 24 results</span>
+              <div class="flex gap-1">
+                <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">&lt;</button>
+                <button class="w-7 h-7 bg-teal-600 text-white rounded flex items-center justify-center">1</button>
+                <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">2</button>
+                <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">3</button>
+                <span class="px-1 flex items-center">...</span>
+                <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">5</button>
+                <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">&gt;</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    
+      
+
+      <!-- ════════════════════════════════════════
+           TAB 5 – Add Provider Category
+      ════════════════════════════════════════ -->
+      <div id="tab-add-provider-category" class="tab-pane">
+        <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+          <!-- Form -->
+          <div class="p-6 border-b border-gray-100">
+            <h2 class="text-sm font-semibold text-gray-800 mb-4">Add / Edit Required Documents</h2>
+            <div class="grid grid-cols-3 gap-3 items-end">
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Provider Category Name</label>
+                <input type="text" placeholder="Enter Provider Category Name" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"/>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Task Or File Handling</label>
+                <select class="w-full px-3 py-2 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white text-gray-500">
+                  <option value="">Select Task Or File Handling</option>
+                  <option>Task</option>
+                  <option>File Handling</option>
+                </select>
+              </div>
+              <div>
+                <button class="w-[250px] bg-teal-600 text-white text-xs font-medium px-5 py-2 rounded-md hover:bg-teal-700 transition-colors">Add Provider Category</button>
+              </div>
+            </div>
+          </div>
+          </div>
+
+          <!-- Index Rules table -->
+           <div class="bg-white rounded-lg border border-gray-200 shadow-sm mt-6" >
+            <div class="px-6 py-4 border-b border-gray-100"><h3 class="text-sm font-semibold text-gray-800">Index Rules</h3></div>
+            <table class="w-full text-xs">
+              <thead class="bg-gray-50 border-b border-gray-100">
+                <tr>
+                  <th class="py-3 px-6 font-medium text-gray-500 text-center">Category</th>
+                  <th class="py-3 px-6 font-medium text-gray-500 text-center">Task Or File Handling</th>
+                  <th class="py-3 px-6 font-medium text-gray-500 text-center">Status</th>
+                  <th class="py-3 px-6 font-medium text-gray-500 text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <tr>
+                  <td class="py-4 px-6 text-center text-gray-800 font-medium">Loss Adjuster</td>
+                  <td class="py-4 px-6 text-center text-gray-600">Task</td>
+                  <td class="py-4 px-6 text-center"><label class="toggle"><input type="checkbox" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label></td>
+                  <td class="py-4 px-6 text-center"><div class="flex items-center justify-center gap-2"><button class="text-teal-600 hover:text-teal-800"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button><button class="text-red-500 hover:text-red-700"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button></div></td>
+                </tr>
+                <tr class="bg-gray-50">
+                  <td class="py-4 px-6 text-center text-gray-800 font-medium">Investigator</td>
+                  <td class="py-4 px-6 text-center text-gray-600">Task</td>
+                  <td class="py-4 px-6 text-center"><label class="toggle"><input type="checkbox" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label></td>
+                  <td class="py-4 px-6 text-center"><div class="flex items-center justify-center gap-2"><button class="text-teal-600 hover:text-teal-800"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button><button class="text-red-500 hover:text-red-700"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button></div></td>
+                </tr>
+                <tr>
+                  <td class="py-4 px-6 text-center text-gray-800 font-medium">Risk Engineering</td>
+                  <td class="py-4 px-6 text-center text-gray-600">Task</td>
+                  <td class="py-4 px-6 text-center"><label class="toggle"><input type="checkbox"/><div class="toggle-track"></div><div class="toggle-thumb"></div></label></td>
+                  <td class="py-4 px-6 text-center"><div class="flex items-center justify-center gap-2"><button class="text-teal-600 hover:text-teal-800"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button><button class="text-red-500 hover:text-red-700"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button></div></td>
+                </tr>
+                <tr class="bg-gray-50">
+                  <td class="py-4 px-6 text-center text-gray-800 font-medium">Re - Insurance</td>
+                  <td class="py-4 px-6 text-center text-gray-600">Task</td>
+                  <td class="py-4 px-6 text-center"><label class="toggle"><input type="checkbox"/><div class="toggle-track"></div><div class="toggle-thumb"></div></label></td>
+                  <td class="py-4 px-6 text-center"><div class="flex items-center justify-center gap-2"><button class="text-teal-600 hover:text-teal-800"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button><button class="text-red-500 hover:text-red-700"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button></div></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="px-6 py-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+              <span>Showing 1 to 5 of 24 results</span>
+              <div class="flex gap-1">
+                <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">&lt;</button>
+                <button class="w-7 h-7 bg-teal-600 text-white rounded flex items-center justify-center">1</button>
+                <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">2</button>
+                <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">3</button>
+                <span class="px-1 flex items-center">...</span>
+                <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">5</button>
+                <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">&gt;</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /p-6 -->
+  </main>
+
+  <script>
+    renderSidebar('settings');
+
+    function switchTab(tabKey) {
+      // Update buttons
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        if (btn.dataset.tab === tabKey) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      // Update panes
+      document.querySelectorAll('.tab-pane').forEach(pane => {
+        pane.classList.remove('active');
+      });
+      const target = document.getElementById('tab-' + tabKey);
+      if (target) target.classList.add('active');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>File / Task Assignment — Insurance Claims Portal</title>
+  <meta name="description" content="Manage file and task assignments for insurance claims." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: { 600: '#00ADBB', 700: '#008A9A', 50: '#f0fdfa' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+
+  <!-- NAVBAR -->
+  <div id="navbar-container"></div>
+  <script src="navbar-component.js"></script>
+
+  <!-- SIDEBAR -->
+  <div id="sidebar-container"></div>
+  <script src="sidebar-component.js"></script>
+
+  <main class="ml-64 pt-16 min-h-screen">
+    <div class="p-6">
+      <h1 class="text-xl font-bold text-gray-800 mb-6">Profile</h1>
+      <p class="text-sm text-gray-500 mb-5">Manage internal and customer communications</p>
+
+      
+         <!-- Filters -->
+      <div class="bg-white rounded-lg border border-gray-200 p-4 mb-5">
+        <div class="flex items-center justify-between mb-4 text-sm font-medium text-gray-800">
+            <img src="" alt="" class="w-16 h-16 rounded-full object-cover bg-gray-200"/>
+            <!-- <span class="text-gray-600">User ID: 12345</span> -->
+          
+        </div>
+        <div class="mb-4">
+          <h2 class="text-sm font-semibold text-gray-800">Profile Information</h2>
+        </div>
+        <div class="grid grid-cols-2 gap-4 items-end">
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">First Name</label>
+            <input type="text" placeholder="Enter Claim Number"
+              class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Last Name</label>
+            <input type="text" placeholder="Enter Contact Number"
+              class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Email Address</label>
+            <input type="email" placeholder="Enter Email Address"
+              class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Extension Number</label>
+            <input type="text" placeholder="Enter Contact Number"
+              class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Department</label>
+            <select name="" id="" class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500">
+                <option value="">Select Department</option>
+                <option value="">D2</option>
+                <option value="">D3</option>
+
+            </select>
+            
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Category</label>
+            <select name="" id="" class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500">
+                <option value="">Select Category</option>
+                <option value="">C1</option>
+                <option value="">C2</option>
+
+            </select>
+            
+          </div>
+          <div class="col-span-2 flex justify-start gap-2 mt-4">
+            <button class="bg-teal-600 text-white text-xs font-medium px-4 py-2 rounded-md hover:bg-teal-700 transition-colors">Edit</button>
+
+          </div>
+          
+        </div>
+      </div>
+
+
+      
+
+
+    </div>
+    </main>
+</body>
+</html>

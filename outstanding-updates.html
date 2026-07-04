@@ -26,34 +26,11 @@
 </head>
 
 <body class="bg-gray-50 min-h-screen">
-  <header class="fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 flex items-center px-5 z-50">
-    <div class="flex items-center gap-2">
-      <button onclick="window.toggleSidebar()" class="p-1 mr-2 text-gray-500 hover:text-teal-600 transition-colors"><svg
-          class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-        </svg></button>
-      <div class="w-7 h-7 bg-teal-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">I</div>
-      <span class="font-semibold text-gray-800 text-sm">Insurance Claims Portal</span>
-    </div>
-    <div class="ml-auto flex items-center gap-4">
-      <button class="relative p-2 text-gray-500 hover:text-teal-600">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-        </svg>
-        <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-      </button>
-      <div class="flex items-center gap-2 cursor-pointer" onclick="location.href='settings.html'">
-        <img src="https://ui-avatars.com/api/?name=Ranga+Karunanayake&background=0d9488&color=fff&size=64"
-          class="w-8 h-8 rounded-full" alt="Avatar" />
-        <div class="text-right">
-          <div class="text-xs font-semibold text-gray-800 leading-tight">Ranga</div>
-          <div class="text-xs text-gray-500 leading-tight">Karunanayake</div>
-        </div>
-      </div>
-    </div>
-  </header>
+  <!-- NAVBAR -->
+  <div id="navbar-container"></div>
+  <script src="navbar-component.js"></script>
 
+  <!-- SIDEBAR -->
   <div id="sidebar-container"></div>
   <script src="sidebar-component.js"></script>
 
@@ -63,7 +40,7 @@
     <div class="p-6">
       <div id="pane-user" class="tab-pane">
       <h1 class="text-xl font-bold text-gray-800 mb-1">Outstanding Updates</h1>
-      <p class="text-sm text-gray-500 mb-5">Track and manage pending claim updates and follow-ups</p>
+      <p class="text-sm text-gray-500 mb-5">Manage claim delays and outstanding items</p>
 
       <div class="flex gap-2 mb-5">
         <button id="tab-user"
@@ -161,14 +138,14 @@
 
           </div>
           <div class="flex-col gap-2 mt-2">
-            <label class="block text-xs font-medium text-gray-600 mb-1">Outstanding Reason</label>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Remarks / Comments</label>
             <input type="text" placeholder="Enter detailed remarks about the outstanding item..."
               class="w-full text-xs border border-gray-300 rounded-md px-3 py-4 focus:outline-none focus:ring-2 focus:ring-teal-500" />
 
           </div>
           <div class="flex items-center justify-end px-4 py-3 border-gray-200">
             <button
-              class="bg-teal-600 text-white text-xs font-medium px-4 py-2 rounded-md hover:bg-teal-700 transition-colors">spanSave
+              class="bg-teal-600 text-white text-xs font-medium px-4 py-2 rounded-md hover:bg-teal-700 transition-colors">Save
               Update</button>
           </div>
         </div>
