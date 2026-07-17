@@ -75,7 +75,7 @@
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                 </svg>
-                Export
+                Export to Excel
               </button>
               <span class="bg-red-50 text-red-500 text-xs font-medium px-2.5 py-1 rounded border border-red-200">9 records found</span>
             </div>
@@ -91,7 +91,7 @@
                 </div>
               </div>
               <div>
-                <label class="block text-xs font-medium text-gray-600 mb-1">Claim / Reference Number</label>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Claim / Reference / Policy Number</label>
                 <div class="relative">
                   <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35" /></svg>
                   <input type="text" placeholder="Enter Number..." class="w-full text-xs border border-gray-300 rounded-md pl-8 pr-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
@@ -99,7 +99,7 @@
               </div>
               <div class="flex gap-2">
                 <div class="flex-1">
-                  <label class="block text-xs font-medium text-gray-600 mb-1">Contact Number</label>
+                  <label class="block text-xs font-medium text-gray-600 mb-1">Contact Number (Claim-Intimated)</label>
                   <div class="relative">
                     <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35" /></svg>
                     <input type="text" placeholder="Enter Contact Number..." class="w-full text-xs border border-gray-300 rounded-md pl-8 pr-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
@@ -116,17 +116,15 @@
             <table class="w-full text-xs">
               <thead class="bg-gray-50 border-b border-gray-200">
                 <tr>
-                  <th class="w-10 px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></th>
                   <th class="px-3 py-3 text-left text-gray-600 font-medium">Claim Number</th>
                   <th class="px-3 py-3 text-left text-gray-600 font-medium">Ref Number</th>
                   <th class="px-3 py-3 text-left text-gray-600 font-medium">Assigned Date</th>
                   <th class="px-3 py-3 text-left text-gray-600 font-medium">Assigned By</th>
-                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Accept By Status</th>
+                  <th class="px-3 py-3 text-left text-gray-600 font-medium">Accept File Status</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-100">
                 <tr class="hover:bg-gray-50">
-                  <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
                   <td class="px-3 py-3 text-teal-700 font-medium">CLM-2024-05238</td>
                   <td class="px-3 py-3 text-gray-800">REF-2024-05238</td>
                   <td class="px-3 py-3 text-gray-600">Jan 15, 2024</td>
@@ -249,20 +247,6 @@
               <label class="block text-xs font-medium text-gray-800 mb-1">Date of Loss</label>
               <input type="date" class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 bg-gray-50 text-gray-500 focus:outline-none" value="2024-01-15" readonly />
             </div>
-            <div>
-              <label class="block text-xs font-medium text-gray-800 mb-1">Assignee Role</label>
-              <select class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-500">
-                <option>Select Role</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-xs font-medium text-gray-800 mb-1">Assign To (Officer Name)</label>
-              <select class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-500">
-                <option>Select Officer</option>
-              </select>
-            </div>
-          </div>
-          <div class="grid grid-cols-2 gap-4 mb-5">
             <div>
               <label class="block text-xs font-medium text-gray-800 mb-1">Assignee Role</label>
               <select class="w-full text-xs border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-500">
@@ -568,7 +552,7 @@
                   <td class="px-2 py-3 text-gray-800">Jan 15, 2024</td>
                   <td class="px-2 py-3"><span class="bg-yellow-100/50 text-yellow-800 px-2 py-1 rounded-full text-[10px] font-medium">3 days</span></td>
                   <td class="px-2 py-3 text-gray-800">Comment 1</td>
-                  <td class="px-3 py-4"><button class="bg-teal-600 text-white text-xs px-6 py-1.5 rounded hover:bg-teal-700">Received File</button></td>
+                  <td class="px-3 py-4"><button class="bg-teal-600 text-white text-xs px-6 py-1.5 rounded hover:bg-teal-700">Received Files</button></td>
                 </tr>
                 <tr class="hover:bg-gray-50 bg-gray-50/50">
                   <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
@@ -581,7 +565,7 @@
                   <td class="px-2 py-3 text-gray-800">Jan 15, 2024</td>
                   <td class="px-2 py-3"><span class="bg-red-100/50 text-red-800 px-2 py-1 rounded-full text-[10px] font-medium">7 days</span></td>
                   <td class="px-2 py-3 text-gray-800">Comment 2</td>
-                  <td class="px-3 py-4"><button class="bg-teal-600 text-white text-xs px-6 py-1.5 rounded hover:bg-teal-700">Done</button></td>
+                  <td class="px-2 py-3"><span class="bg-green-100/50 text-green-800 px-2 py-1 rounded-full text-[10px] font-medium">Done</span></td>
                 </tr>
                 <tr class="hover:bg-gray-50">
                   <td class="px-4 py-3"><input type="checkbox" class="rounded border-gray-300" /></td>
